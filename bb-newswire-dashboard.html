@@ -533,17 +533,17 @@ body{animation:flicker 8s ease infinite;}
 .ncard.sel .nc-ai,.ncard.exp .nc-ai{display:block;}
 .ai-label{font-size:7.5px;letter-spacing:.2em;color:var(--t1);opacity:.6;margin-right:5px;}
 
-/* Card footer — hidden in compact, shown on hover/select/full */
+/* Card footer */
 .nc-foot{
   display:flex;align-items:center;gap:4px;
-  padding:8px 12px 9px 14px;
-  border-top:1px solid rgba(0,255,65,.2);
+  padding:7px 12px 8px 14px;
+  border-top:1px solid rgba(0,255,65,.15);
   background:#000e00;
   flex-shrink:0;
 }
-/* Compact mode: hide footer unless card is hovered or selected */
-.feed-compact .ncard:not(.sel):not(:hover) .nc-foot{ display:none; }
-.feed-compact .ncard:hover .nc-foot{ display:flex; }
+/* Compact: footer hidden unless selected */
+.feed-compact .ncard:not(.sel) .nc-foot{ display:none; }
+.feed-compact .ncard.sel .nc-foot{ display:flex; }
 .fb{
   height:26px;padding:0 11px;
   font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:.07em;text-transform:uppercase;
@@ -865,7 +865,7 @@ body{animation:flicker 8s ease infinite;}
 
 <!-- ══ CATEGORY + FILTER BAR ══ -->
 <div class="catbar">
-  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>[CT]</div>
+  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>CoinTelegraph</div>
   <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale Alert</div>
   <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain Data</div>
   <div class="cat cm on" data-c="cm" onclick="toggleCat(this)"><div class="cpip"></div>Media</div>
@@ -994,38 +994,38 @@ body{animation:flicker 8s ease infinite;}
 <script>
 /* ══ SOURCE MAP ══ */
 const SM={
-  'reuters':{l:'[REUTERS]',c:'cr'},'ap':{l:'[AP]',c:'cr'},'ap news':{l:'[AP]',c:'cr'},
+  /* Wire */
+  'reuters':{l:'[REUTERS]',c:'cr'},'reuters tech':{l:'[REUTERS]',c:'cr'},
   'bloomberg':{l:'[BLOOMBERG]',c:'cr'},'wsj':{l:'[WSJ]',c:'cr'},
-  'financial times':{l:'[FT]',c:'cr'},'cnbc':{l:'[CNBC]',c:'cr'},'ft':{l:'[FT]',c:'cr'},
-  'marketwatch':{l:'[MKT]',c:'cr'},'forbes':{l:'[FORBES]',c:'cr'},
-  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},'sec filings':{l:'[SEC 📄]',c:'cg'},'sec news':{l:'[SEC]',c:'cg'},
+  'cnbc':{l:'[CNBC]',c:'cr'},'ap':{l:'[AP]',c:'cr'},'ap news':{l:'[AP]',c:'cr'},
+  /* Gov */
+  'sec filings':{l:'[SEC 📄]',c:'cg'},'sec news':{l:'[SEC]',c:'cg'},
+  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
   'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
-  'congress':{l:'[CONGRESS]',c:'cg'},'treasury':{l:'[TREASURY]',c:'cg'},'cftc':{l:'[CFTC]',c:'cg'},
+  'cftc':{l:'[CFTC]',c:'cg'},'congress':{l:'[CONGRESS]',c:'cg'},
+  /* Onchain */
   'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
   'lookonchain':{l:'[LOOKONCHAIN]',c:'cc'},
-  'whale alert':{l:'[WHALE 🐳]',c:'cw'},'whalealert':{l:'[WHALE 🐳]',c:'cw'},'whale_alert':{l:'[WHALE 🐳]',c:'cw'},
-  'cointelegraph':{l:'[CT]',c:'cx'},'coindesk':{l:'[COINDESK]',c:'cm'},
-  'decrypt':{l:'[DECRYPT]',c:'cm'},'the block':{l:'[THE BLOCK]',c:'cm'},
-  'theblock':{l:'[THE BLOCK]',c:'cm'},'bitcoin magazine':{l:'[BTC MAG]',c:'cm'},
-  'bitcoinmagazine':{l:'[BTC MAG]',c:'cm'},'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
-  'cryptopotato':{l:'[CRYPTOPOTATO]',c:'cm'},'cryptonews':{l:'[CRYPTONEWS]',c:'cm'},
-  'beincrypto':{l:'[BEINCRYPTO]',c:'cm'},'newsbtc':{l:'[NEWSBTC]',c:'cm'},
-  'ambcrypto':{l:'[AMBCRYPTO]',c:'cm'},'u.today':{l:'[U.TODAY]',c:'cm'},
-  'utoday':{l:'[U.TODAY]',c:'cm'},'cryptopanic':{l:'[CRYPTOPANIC]',c:'cm'},
-  'twitter':{l:'[𝕏]',c:'cx'},'x':{l:'[𝕏]',c:'cx'},'@becausebitcoin':{l:'[𝕏 @BB]',c:'cx'},
-  'manual':{l:'[MANUAL]',c:'cm'},
-  'u.today':{l:'[U.TODAY]',c:'cm'},
-  'utoday':{l:'[U.TODAY]',c:'cm'},
-  'newsbtc':{l:'[NEWSBTC]',c:'cm'},
+  /* Whale */
+  'whale alert':{l:'[WHALE 🐳]',c:'cw'},'whalealert':{l:'[WHALE 🐳]',c:'cw'},
+  /* CoinTelegraph — cx (cyan) */
+  'cointelegraph':{l:'[COINTELEGRAPH]',c:'cx'},
+  /* Social */
+  'twitter':{l:'[𝕏]',c:'cx'},'@becausebitcoin':{l:'[𝕏 BB]',c:'cx'},
+  /* Media */
+  'coindesk':{l:'[COINDESK]',c:'cm'},
+  'decrypt':{l:'[DECRYPT]',c:'cm'},
+  'the block':{l:'[THE BLOCK]',c:'cm'},'theblock':{l:'[THE BLOCK]',c:'cm'},
+  'bitcoin magazine':{l:'[BTC MAG]',c:'cm'},'bitcoinmagazine':{l:'[BTC MAG]',c:'cm'},
+  'blockworks':{l:'[BLOCKWORKS]',c:'cm'},
+  'the defiant':{l:'[THE DEFIANT]',c:'cm'},'thedefiant':{l:'[THE DEFIANT]',c:'cm'},
+  'cryptoslate':{l:'[CRYPTOSLATE]',c:'cm'},
   'beincrypto':{l:'[BEINCRYPTO]',c:'cm'},
-  'cryptopotato':{l:'[CRYPTOPOTATO]',c:'cm'},
-  'ambcrypto':{l:'[AMBCRYPTO]',c:'cm'},
-  'the block':{l:'[THE BLOCK]',c:'cm'},
-  'theblock':{l:'[THE BLOCK]',c:'cm'},
-  'bitcoin magazine':{l:'[BTC MAG]',c:'cm'},
-  'bitcoinmagazine':{l:'[BTC MAG]',c:'cm'},
   'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
+  'newsbtc':{l:'[NEWSBTC]',c:'cm'},
+  'u.today':{l:'[U.TODAY]',c:'cm'},'utoday':{l:'[U.TODAY]',c:'cm'},
   'cryptonews':{l:'[CRYPTONEWS]',c:'cm'},
+  'manual':{l:'[MANUAL]',c:'cm'},
 };
 function fS(r=''){
   const k=r.toLowerCase().trim().replace(/\s+/g,' ');
