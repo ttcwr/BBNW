@@ -626,6 +626,7 @@ body{animation:flicker 8s ease infinite;}
   width:100%;background:var(--s2);
   border:1px solid var(--b2);border-radius:2px;
   padding:9px 11px;font-family:var(--sans);font-size:12px;
+  min-height:140px;
   color:var(--t1);resize:none;height:62px;line-height:1.55;
   outline:none;transition:border-color .14s,box-shadow .14s;
 }
@@ -648,19 +649,10 @@ body{animation:flicker 8s ease infinite;}
   font-family:var(--mono);font-size:9px;color:var(--t4);cursor:pointer;transition:all .12s;
 }
 .tbtn:hover{border-color:var(--b3);color:var(--t2);background:var(--s3);}
-.actsec{flex:1;overflow:hidden;display:flex;flex-direction:column;}
-.actlog{flex:1;overflow-y:auto;}
-.actlog::-webkit-scrollbar{width:2px;}
-.actlog::-webkit-scrollbar-thumb{background:var(--b3);}
-.arow{
-  display:flex;align-items:baseline;gap:6px;
-  padding:5px 16px;border-bottom:1px solid var(--b0);
-  font-size:9px;animation:cin .2s ease;transition:background .07s;cursor:default;
-}
-.arow:hover{background:var(--s2);}
-.at{font-family:var(--mono);color:var(--t4);font-variant-numeric:tabular-nums;min-width:30px;white-space:nowrap;}
+
+
+
 .aic{width:9px;text-align:center;flex-shrink:0;}
-.ax{color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:10px;}
 .ax b{color:var(--t3);font-weight:400;}
 .cx{color:var(--cx);} .cw{color:var(--cw);} .cc{color:var(--cc);}
 .cm{color:var(--cm);} .cg{color:var(--cg);} .cr{color:var(--cr);}
@@ -967,10 +959,6 @@ body{animation:flicker 8s ease infinite;}
       </div>
     </div>
 
-    <div class="actsec">
-      <div class="ph">Activity Log</div>
-      <div class="actlog" id="alog"></div>
-    </div>
   </div>
 </div>
 
@@ -1278,11 +1266,14 @@ function connectWS(){
   }catch(_){}
 }
 function norm(r){
+  // Strip HTML tags from summary
+  const rawAi = r.summary||r.ai_note||'';
+  const cleanAi = rawAi.replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#\d+;/g,'').trim().slice(0,200);
   return{
     id:      r.id,
     source:  r.source||'?',
     headline:r.headline||'',
-    ai:      r.summary||r.ai_note||'Live — add your analysis.',
+    ai:      cleanAi||'',
     score:   r.score||r.ai_score||0.5,
     status:  r.status||'pending',
     url:     r.url||'#',
@@ -1378,6 +1369,7 @@ function stats(){
 }
 
 function esc(s=''){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function stripHtml(s=''){return s.replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#\d+;/g,'').trim();}
 
 /* ══ DETAIL ══ */
 function doSel(id){
@@ -1401,7 +1393,7 @@ function renderD(it){
         <span class="d-age">${it.time} UTC</span>
       </div>
       <div class="d-hl">${esc(it.headline)}</div>
-      <div class="d-ai">${esc(it.ai)}</div>
+      <div class="d-ai">${esc(stripHtml(it.ai))}</div>
       <div class="d-score">
         <span class="d-sl">Relevance</span>
         <div class="d-bar"><div class="d-bf" style="width:${pct}%"></div></div>
@@ -1477,12 +1469,7 @@ document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){
 /* ══ HELPERS ══ */
 function setTab(el,t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));el.classList.add('on');curTab=t;selId=null;render();}
 
-function logA(type,src,txt){
-  const log=document.getElementById('alog'),t=hm(new Date()),s=fS(src);
-  const short=txt.length>42?txt.slice(0,42)+'…':txt;
-  const ico=type==='push'?'<span style="color:var(--green)">↑</span>':'<span style="color:var(--red)">✕</span>';
-  const el=document.createElement('div');el.className='arow';
-  el.innerHTML=`<span class="at">${t}</span><span class="aic">${ico}</span><span class="ax"><b class="${s.c}">${s.l}</b> ${esc(short)}</span>`;
+function logA(){}</span><span class="aic">${ico}</span><span class="ax"><b class="${s.c}">${s.l}</b> ${esc(short)}</span>`;
   log.insertBefore(el,log.firstChild);
 }
 function showT(msg,bg,col){
