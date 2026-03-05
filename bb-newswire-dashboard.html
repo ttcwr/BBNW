@@ -397,6 +397,7 @@ body{animation:flicker 8s ease infinite;}
   flex-direction:column;
   min-height:62px;
   box-shadow:0 1px 4px rgba(0,0,0,.5);
+  pointer-events:all;
 }
 @keyframes cin{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:translateX(0);}}
 
@@ -477,6 +478,16 @@ body{animation:flicker 8s ease infinite;}
 .nc-relpct{font-family:var(--mono);font-size:9px;white-space:nowrap;min-width:32px;text-align:right;transition:color .2s;flex-shrink:0;}
 
 /* ── HEADLINE — big, bright, readable ── */
+.nc-hl-link{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+}
+.nc-hl-link:hover{
+  text-decoration:underline;
+  text-decoration-color:rgba(0,255,65,.3);
+  text-underline-offset:3px;
+}
 .nc-hl{
   font-family:var(--sans);font-size:13.5px;font-weight:500;
   color:var(--t0);line-height:1.5;
@@ -898,9 +909,8 @@ body{animation:flicker 8s ease infinite;}
       <div class="src-row"><div class="src-dot cg"></div><span class="src-name">CFTC</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">Nansen</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cw"></div><span class="src-name">Whale Alert</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row"><div class="src-dot cw"></div><span class="src-name">🐳 Whale Alert</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row"><div class="src-dot cx"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bs">SLOW</span></div>
       <div class="src-row"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
@@ -989,9 +999,9 @@ const SM={
   'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
   'congress':{l:'[CONGRESS]',c:'cg'},'treasury':{l:'[TREASURY]',c:'cg'},'cftc':{l:'[CFTC]',c:'cg'},
   'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
-  'nansen':{l:'[NANSEN]',c:'cc'},'lookonchain':{l:'[LOOKONCHAIN]',c:'cc'},
-  'whale alert':{l:'[WHALE]',c:'cw'},'whalealert':{l:'[WHALE]',c:'cw'},
-  'cointelegraph':{l:'[CT]',c:'cm'},'coindesk':{l:'[COINDESK]',c:'cm'},
+  'lookonchain':{l:'[LOOKONCHAIN]',c:'cc'},
+  'whale alert':{l:'[WHALE 🐳]',c:'cw'},'whalealert':{l:'[WHALE 🐳]',c:'cw'},'whale_alert':{l:'[WHALE 🐳]',c:'cw'},
+  'cointelegraph':{l:'[CT]',c:'cx'},'coindesk':{l:'[COINDESK]',c:'cm'},
   'decrypt':{l:'[DECRYPT]',c:'cm'},'the block':{l:'[THE BLOCK]',c:'cm'},
   'theblock':{l:'[THE BLOCK]',c:'cm'},'bitcoin magazine':{l:'[BTC MAG]',c:'cm'},
   'bitcoinmagazine':{l:'[BTC MAG]',c:'cm'},'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
@@ -1335,6 +1345,7 @@ function render(){
 
     const scoreColor = pct>=80?'var(--green)':pct>=55?'var(--y)':'var(--t4)';
 
+    const cardUrl = it.url && it.url !== '#' ? it.url : null;
     return `<div class="ncard ${s.c}${brk?' brk':''} ${it.status}${isSel?' sel':''}${it._new?' fl':''}${isExp?' exp':''}"
          id="nc-${it.id}" onclick="doSel('${it.id}')">
       <div class="nc-head">
@@ -1343,7 +1354,7 @@ function render(){
         <span class="nc-src">${s.l}</span>
         <span class="nc-relpct" style="color:${scoreColor};margin-left:auto;">${pct}%</span>
       </div>
-      <div class="nc-hl">${esc(it.headline)}</div>
+      ${cardUrl?`<a class="nc-hl nc-hl-link" href="${cardUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(it.headline)}</a>`:`<div class="nc-hl">${esc(it.headline)}</div>`}
       ${tickerRow}
       ${isExp?`<div class="nc-ai"><span class="ai-label">&gt; AI_</span>${esc(it.ai)}</div>`:''}
       ${foot}
@@ -1389,7 +1400,7 @@ function renderD(it){
     <div class="detail">
       <div class="d-top">
         ${brk?'<span class="brk-tag">Breaking</span>':''}
-        <span class="d-src" style="color:${clr};border-color:${base}.22);background:${base}.07);">${s.l}</span>
+        <a class="d-src" href="${it.url||'#'}" target="_blank" rel="noopener" style="color:${clr};border-color:${base}.22);background:${base}.07);text-decoration:none;cursor:pointer;">${s.l} ↗</a>
         <span class="d-age">${it.time} UTC</span>
       </div>
       <div class="d-hl">${esc(it.headline)}</div>
