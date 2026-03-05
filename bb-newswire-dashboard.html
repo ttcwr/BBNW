@@ -413,7 +413,7 @@ body{animation:flicker 8s ease infinite;}
 .ncard.cg::before{background:var(--cg);}
 .ncard.cr::before{background:var(--cr);}
 
-.ncard:hover{border-color:rgba(0,255,65,.4);background:#041f04;box-shadow:0 0 16px rgba(0,255,65,.08),0 2px 8px rgba(0,0,0,.4);}
+.ncard:hover{border-color:rgba(0,255,65,.4);background:#041f04;box-shadow:0 0 16px rgba(0,255,65,.08),0 2px 8px rgba(0,0,0,.4);z-index:10;position:relative;}
 .ncard:hover::before{opacity:1;}
 .ncard.cx:hover::before{box-shadow:2px 0 14px rgba(0,207,255,.5);}
 .ncard.cw:hover::before{box-shadow:2px 0 14px rgba(191,95,255,.5);}
@@ -451,7 +451,7 @@ body{animation:flicker 8s ease infinite;}
 }
 
 /* Card header */
-.nc-head{display:flex;align-items:center;gap:7px;padding:9px 12px 0 13px;overflow:hidden;}
+.nc-head{display:flex;align-items:center;gap:7px;padding:9px 12px 0 13px;}
 .nc-time{font-family:var(--mono);font-size:9px;color:rgba(0,255,65,.4);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;min-width:32px;}
 .nc-src{
   display:inline-flex;align-items:center;
@@ -865,7 +865,7 @@ body{animation:flicker 8s ease infinite;}
 
 <!-- ══ CATEGORY + FILTER BAR ══ -->
 <div class="catbar">
-  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>𝕏</div>
+  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>CT</div>
   <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale Alert</div>
   <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain Data</div>
   <div class="cat cm on" data-c="cm" onclick="toggleCat(this)"><div class="cpip"></div>Media</div>
@@ -899,23 +899,26 @@ body{animation:flicker 8s ease infinite;}
       <button class="sb-btn" onclick="showT('Sources synced','rgba(34,197,94,.1)','var(--green)')">↻ Sync</button>
     </div>
     <div class="src-scroll">
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">Reuters</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">Bloomberg</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">AP News</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">CNBC</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">SEC EDGAR</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">Congress RSS</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">CFTC</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cw"></div><span class="src-name">🐳 Whale Alert</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cx"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cx"></div><span class="src-name">𝕏 @becausebitcoin</span><span class="src-badge bd">OFF</span></div>
+      <div class="src-row cx"><div class="src-dot cx"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CryptoSlate</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">BeInCrypto</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">Reuters</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC Filings</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC News</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">CFTC</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cw"><div class="src-dot cw"></div><span class="src-name">🐳 Whale Alert</span><span class="src-badge bl">LIVE</span></div>
     </div>
 
     <!-- Keyboard shortcuts -->
@@ -995,7 +998,7 @@ const SM={
   'bloomberg':{l:'[BLOOMBERG]',c:'cr'},'wsj':{l:'[WSJ]',c:'cr'},
   'financial times':{l:'[FT]',c:'cr'},'cnbc':{l:'[CNBC]',c:'cr'},'ft':{l:'[FT]',c:'cr'},
   'marketwatch':{l:'[MKT]',c:'cr'},'forbes':{l:'[FORBES]',c:'cr'},
-  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
+  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},'sec filings':{l:'[SEC 📄]',c:'cg'},'sec news':{l:'[SEC]',c:'cg'},
   'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
   'congress':{l:'[CONGRESS]',c:'cg'},'treasury':{l:'[TREASURY]',c:'cg'},'cftc':{l:'[CFTC]',c:'cg'},
   'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
