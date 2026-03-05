@@ -865,7 +865,7 @@ body{animation:flicker 8s ease infinite;}
 
 <!-- ══ CATEGORY + FILTER BAR ══ -->
 <div class="catbar">
-  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>CT</div>
+  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>[CT]</div>
   <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale Alert</div>
   <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain Data</div>
   <div class="cat cm on" data-c="cm" onclick="toggleCat(this)"><div class="cpip"></div>Media</div>
@@ -1254,22 +1254,20 @@ function connectWS(){
         // Replace demo items with live ones from server
         const live=m.items.map(norm);
         if(live.length>0){
+          // Sort newest first by time string (HH:MM)
+          live.sort((a,b)=>b._ts.localeCompare(a._ts));
           items=live;
           totalN=items.length;
-          // Rebuild seen set from live data
           seen.clear();
           items.forEach(x=>seen.add(x.headline.slice(0,60).toLowerCase()));
         }
       }
       else if(m.type==='new_items'){
-        m.items.map(norm).forEach(ni=>{
-          if(!items.find(x=>x.id===ni.id)){
-            ni._new=true;
-            items.unshift(ni);
-            totalN++;
-            seen.add(ni.headline.slice(0,60).toLowerCase());
-          }
-        });
+        const newNormed=m.items.map(norm).filter(ni=>!items.find(x=>x.id===ni.id));
+        newNormed.forEach(ni=>{ni._new=true;seen.add(ni.headline.slice(0,60).toLowerCase());totalN++;});
+        // Merge and re-sort everything newest first
+        items=[...newNormed,...items];
+        items.sort((a,b)=>b._ts.localeCompare(a._ts));
       }
       else if(m.type==='status_update'){const it=items.find(x=>x.id===m.item_id);if(it)it.status=m.status;}
       render();stats();
@@ -1279,18 +1277,19 @@ function connectWS(){
   }catch(_){}
 }
 function norm(r){
-  // Strip HTML tags from summary
   const rawAi = r.summary||r.ai_note||'';
   const cleanAi = rawAi.replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#\d+;/g,'').trim().slice(0,200);
   return{
     id:      r.id,
     source:  r.source||'?',
+    cat:     r.cat||fS(r.source||'').c||'cm',  /* pass server cat directly */
     headline:r.headline||'',
     ai:      cleanAi||'',
     score:   r.score||r.ai_score||0.5,
     status:  r.status||'pending',
     url:     r.url||'#',
     time:    r.published||hm(new Date()),
+    _ts:     r.published||'',
   };
 }
 
@@ -1301,7 +1300,7 @@ function render(){
   const list=items.filter(it=>{
     if(curTab==='pending'&&it.status!=='pending') return false;
     if(curTab==='pushed' &&it.status!=='pushed')  return false;
-    if(!onCats.has(fS(it.source).c)) return false;
+    if(!onCats.has(it.cat||fS(it.source).c)) return false;
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
     return true;
   });
