@@ -865,11 +865,10 @@ body{animation:flicker 8s ease infinite;}
 
 <!-- ══ CATEGORY + FILTER BAR ══ -->
 <div class="catbar">
-  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>CoinTelegraph</div>
-  <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale Alert</div>
-  <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain Data</div>
   <div class="cat cm on" data-c="cm" onclick="toggleCat(this)"><div class="cpip"></div>Media</div>
+  <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
   <div class="cat cg on" data-c="cg" onclick="toggleCat(this)"><div class="cpip"></div>.Gov</div>
+  <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain</div>
   <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
 
   <div class="cat-div"></div>
@@ -899,7 +898,8 @@ body{animation:flicker 8s ease infinite;}
       <button class="sb-btn" onclick="showT('Sources synced','rgba(34,197,94,.1)','var(--green)')">↻ Sync</button>
     </div>
     <div class="src-scroll">
-      <div class="src-row cx"><div class="src-dot cx"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">Media</span></div>
+      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
@@ -911,14 +911,18 @@ body{animation:flicker 8s ease infinite;}
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">Reuters</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">Wire</span></div>
+      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">Chainwire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">GlobeNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">BusinessWire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">PRNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">.Gov</span></div>
       <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC Filings</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC News</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">CFTC</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">Onchain</span></div>
       <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cw"><div class="src-dot cw"></div><span class="src-name">🐳 Whale Alert</span><span class="src-badge bl">LIVE</span></div>
     </div>
 
     <!-- Keyboard shortcuts -->
@@ -994,25 +998,8 @@ body{animation:flicker 8s ease infinite;}
 <script>
 /* ══ SOURCE MAP ══ */
 const SM={
-  /* Wire */
-  'reuters':{l:'[REUTERS]',c:'cr'},'reuters tech':{l:'[REUTERS]',c:'cr'},
-  'bloomberg':{l:'[BLOOMBERG]',c:'cr'},'wsj':{l:'[WSJ]',c:'cr'},
-  'cnbc':{l:'[CNBC]',c:'cr'},'ap':{l:'[AP]',c:'cr'},'ap news':{l:'[AP]',c:'cr'},
-  /* Gov */
-  'sec filings':{l:'[SEC 📄]',c:'cg'},'sec news':{l:'[SEC]',c:'cg'},
-  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
-  'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
-  'cftc':{l:'[CFTC]',c:'cg'},'congress':{l:'[CONGRESS]',c:'cg'},
-  /* Onchain */
-  'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
-  'lookonchain':{l:'[LOOKONCHAIN]',c:'cc'},
-  /* Whale */
-  'whale alert':{l:'[WHALE 🐳]',c:'cw'},'whalealert':{l:'[WHALE 🐳]',c:'cw'},
-  /* CoinTelegraph — cx (cyan) */
-  'cointelegraph':{l:'[COINTELEGRAPH]',c:'cx'},
-  /* Social */
-  'twitter':{l:'[𝕏]',c:'cx'},'@becausebitcoin':{l:'[𝕏 BB]',c:'cx'},
   /* Media */
+  'cointelegraph':{l:'[COINTELEGRAPH]',c:'cm'},
   'coindesk':{l:'[COINDESK]',c:'cm'},
   'decrypt':{l:'[DECRYPT]',c:'cm'},
   'the block':{l:'[THE BLOCK]',c:'cm'},'theblock':{l:'[THE BLOCK]',c:'cm'},
@@ -1026,7 +1013,22 @@ const SM={
   'u.today':{l:'[U.TODAY]',c:'cm'},'utoday':{l:'[U.TODAY]',c:'cm'},
   'cryptonews':{l:'[CRYPTONEWS]',c:'cm'},
   'manual':{l:'[MANUAL]',c:'cm'},
-};
+  /* Wire — press release services */
+  'chainwire':{l:'[CHAINWIRE]',c:'cr'},
+  'globenewswire':{l:'[GLOBENEWSWIRE]',c:'cr'},'globe newswire':{l:'[GLOBENEWSWIRE]',c:'cr'},
+  'businesswire':{l:'[BUSINESSWIRE]',c:'cr'},'business wire':{l:'[BUSINESSWIRE]',c:'cr'},
+  'prnewswire':{l:'[PR NEWSWIRE]',c:'cr'},'pr newswire':{l:'[PR NEWSWIRE]',c:'cr'},
+  'reuters':{l:'[REUTERS]',c:'cr'},'reuters tech':{l:'[REUTERS]',c:'cr'},
+  /* Gov */
+  'sec filings':{l:'[SEC 📄]',c:'cg'},'sec news':{l:'[SEC]',c:'cg'},
+  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
+  'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
+  /* Onchain */
+  'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
+  'lookonchain':{l:'[LOOKONCHAIN]',c:'cc'},
+  /* Whale */
+  'whale alert':{l:'[WHALE 🐳]',c:'cw'},'whalealert':{l:'[WHALE 🐳]',c:'cw'},
+}
 function fS(r=''){
   const k=r.toLowerCase().trim().replace(/\s+/g,' ');
   if(SM[k]) return SM[k];
@@ -1061,7 +1063,7 @@ DEMO.forEach((it,i)=>{
 /* ══ STATE ══ */
 let items=[...DEMO],curTab='pending',selId=null,editId=null;
 let pushedN=0,skippedN=0,totalN=DEMO.length;
-let onCats=new Set(['cx','cw','cc','cm','cg','cr']);
+let onCats=new Set(['cm','cr','cg','cc']);
 let viewFull=false;
 const seen=new Set(DEMO.map(x=>x.headline.slice(0,60).toLowerCase()));
 
@@ -1300,7 +1302,16 @@ function render(){
   const list=items.filter(it=>{
     if(curTab==='pending'&&it.status!=='pending') return false;
     if(curTab==='pushed' &&it.status!=='pushed')  return false;
-    if(!onCats.has(it.cat||fS(it.source).c)) return false;
+    const itCat = it.cat||fS(it.source).c;
+    if(!onCats.has(itCat)) return false;
+    /* Wire sources: only show if headline matches crypto keywords */
+    if(itCat==='cr'){
+      const WIRE_KW=['bitcoin','btc','ethereum','eth','solana','sol',
+                     'strategy','bitmine','hype','hyperliquid','crypto',
+                     'blockchain','defi','nft','stablecoin','coinbase','binance'];
+      const hl=it.headline.toLowerCase();
+      if(!WIRE_KW.some(k=>hl.includes(k))) return false;
+    }
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
     return true;
   });
