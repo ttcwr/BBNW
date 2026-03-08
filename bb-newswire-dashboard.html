@@ -870,6 +870,7 @@ body{animation:flicker 8s ease infinite;}
   <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
   <div class="cat cg on" data-c="cg" onclick="toggleCat(this)"><div class="cpip"></div>.Gov</div>
   <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain</div>
+  <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale</div>
 
   <div class="cat-div"></div>
 
@@ -1046,13 +1047,13 @@ const isBrk=h=>BRK.some(k=>h.toLowerCase().includes(k));
 
 /* ══ SEED DATA — shows while live feeds load ══ */
 const DEMO=[
-  {id:'d1',source:'CoinTelegraph', headline:'BlackRock IBIT records $612M single-session inflow — third largest in fund history',           ai:'$600M+ ETF sessions historically precede 5–10% price rallies within 72h. Strongest real-time institutional demand signal available.',score:.81},
-  {id:'d2',source:'Reuters',       headline:'US Treasury proposes mandatory digital asset exchange registration — Q3 compliance deadline',    ai:'Tier-1 regulatory event. Mandatory registration = supply disruption risk for smaller exchanges.',score:.94},
-  {id:'d3',source:'Whale Alert',   headline:'BREAKING: 9,241 BTC ($806M) transferred from Binance cold wallet to unknown address',           ai:'Large unknown-destination outflow. Possible OTC desk or custody move. Monitor reserves closely.',score:.92},
-  {id:'d4',source:'CoinDesk',      headline:"Norway's $1.7T sovereign wealth fund discloses 0.6% indirect BTC exposure via listed equities", ai:'Sovereign fund exposure is a major institutional legitimacy signal.',score:.74},
-  {id:'d5',source:'Bitcoin Magazine',headline:'Bitcoin mining difficulty adjusts +3.2% — network hashrate hits 780 EH/s all-time high',      ai:'Network health metric. No direct price catalyst — routine operational data.',score:.19},
-  {id:'d6',source:'Decrypt',       headline:'BREAKING: Japan FSA approves first domestic spot Bitcoin ETF — launch expected May 2025',        ai:'Japan = $4.8T AUM market. ETF approval events historically generate 5–15% BTC moves.',score:.96},
-  {id:'d7',source:'Glassnode',     headline:'BTC long-term holder supply hits ATH at 14.38M BTC — illiquid supply tightening rapidly',       ai:'LTH ATH + low exchange reserves = structural setup for supply shock.',score:.65},
+  {id:'d1',source:'CoinTelegraph',cat:'cm', headline:'BlackRock IBIT records $612M single-session inflow — third largest in fund history',           ai:'$600M+ ETF sessions historically precede 5–10% price rallies within 72h. Strongest real-time institutional demand signal available.',score:.81},
+  {id:'d2',source:'Reuters',cat:'cr',       headline:'US Treasury proposes mandatory digital asset exchange registration — Q3 compliance deadline',    ai:'Tier-1 regulatory event. Mandatory registration = supply disruption risk for smaller exchanges.',score:.94},
+  {id:'d3',source:'Whale Alert',cat:'cw',   headline:'BREAKING: 9,241 BTC ($806M) transferred from Binance cold wallet to unknown address',           ai:'Large unknown-destination outflow. Possible OTC desk or custody move. Monitor reserves closely.',score:.92},
+  {id:'d4',source:'CoinDesk',cat:'cm',      headline:"Norway's $1.7T sovereign wealth fund discloses 0.6% indirect BTC exposure via listed equities", ai:'Sovereign fund exposure is a major institutional legitimacy signal.',score:.74},
+  {id:'d5',source:'Bitcoin Magazine',cat:'cm',headline:'Bitcoin mining difficulty adjusts +3.2% — network hashrate hits 780 EH/s all-time high',      ai:'Network health metric. No direct price catalyst — routine operational data.',score:.19},
+  {id:'d6',source:'Decrypt',cat:'cm',       headline:'BREAKING: Japan FSA approves first domestic spot Bitcoin ETF — launch expected May 2025',        ai:'Japan = $4.8T AUM market. ETF approval events historically generate 5–15% BTC moves.',score:.96},
+  {id:'d7',source:'Glassnode',cat:'cc',     headline:'BTC long-term holder supply hits ATH at 14.38M BTC — illiquid supply tightening rapidly',       ai:'LTH ATH + low exchange reserves = structural setup for supply shock.',score:.65},
 ];
 const NOW=Date.now();
 DEMO.forEach((it,i)=>{
@@ -1063,7 +1064,7 @@ DEMO.forEach((it,i)=>{
 /* ══ STATE ══ */
 let items=[...DEMO],curTab='pending',selId=null,editId=null;
 let pushedN=0,skippedN=0,totalN=DEMO.length;
-let onCats=new Set(['cm','cr','cg','cc']);
+let onCats=new Set(['cm','cr','cg','cc','cw']);
 let viewFull=false;
 const seen=new Set(DEMO.map(x=>x.headline.slice(0,60).toLowerCase()));
 
