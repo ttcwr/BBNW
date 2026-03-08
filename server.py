@@ -34,82 +34,67 @@ TELEGRAM_CHANNEL   = os.environ.get("TELEGRAM_CHANNEL",   "")
 #   - CryptoSlate + The Defiant added as high-quality extras
 
 FEEDS = [
-    # ── CRYPTO MEDIA (most reliable direct RSS feeds) ──
-    {"url": "https://cointelegraph.com/rss",
-     "source": "CoinTelegraph",    "cat": "cm"},
+    # ── CRYPTO MEDIA ──────────────────────────────────────────────────────────
+    {"url": "https://cointelegraph.com/rss",                        "source": "CoinTelegraph",   "cat": "cm"},
+    {"url": "https://decrypt.co/feed",                              "source": "Decrypt",         "cat": "cm"},
+    {"url": "https://www.coindesk.com/arc/outboundfeeds/rss/",      "source": "CoinDesk",        "cat": "cm"},
+    {"url": "https://bitcoinmagazine.com/.rss/full/",               "source": "Bitcoin Magazine","cat": "cm"},
+    {"url": "https://theblock.co/rss.xml",                          "source": "The Block",       "cat": "cm"},
+    {"url": "https://blockworks.co/feed",                           "source": "Blockworks",      "cat": "cm"},
+    {"url": "https://thedefiant.io/feed",                           "source": "The Defiant",     "cat": "cm"},
+    {"url": "https://cryptoslate.com/feed/",                        "source": "CryptoSlate",     "cat": "cm"},
+    {"url": "https://beincrypto.com/feed/",                         "source": "BeInCrypto",      "cat": "cm"},
+    {"url": "https://bitcoinist.com/feed/",                         "source": "Bitcoinist",      "cat": "cm"},
+    {"url": "https://newsbtc.com/feed/",                            "source": "NewsBTC",         "cat": "cm"},
+    {"url": "https://u.today/rss",                                  "source": "U.Today",         "cat": "cm"},
 
-    {"url": "https://decrypt.co/feed",
-     "source": "Decrypt",          "cat": "cm"},
+    # ── WIRE — keyword filtered, only crypto-relevant items pass ──────────────
+    # Chainwire + GlobeNewswire blockchain category: pre-filtered by topic
+    {"url": "https://chainwire.org/feed/",                                        "source": "Chainwire",     "cat": "cr", "prefiltered": True},
+    {"url": "https://www.globenewswire.com/RssFeed/subjectcode/BC-Blockchain",    "source": "GlobeNewswire", "cat": "cr", "prefiltered": True},
+    # BusinessWire, PRNewswire, Reuters: broad feeds, need keyword filter
+    {"url": "https://feed.businesswire.com/rss/home/?rss=G7&rssid=rs1",          "source": "BusinessWire",  "cat": "cr"},
+    {"url": "https://www.prnewswire.com/rss/news-releases-list.rss",              "source": "PRNewswire",    "cat": "cr"},
+    {"url": "https://feeds.reuters.com/reuters/businessNews",                     "source": "Reuters",       "cat": "cr"},
 
-    {"url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
-     "source": "CoinDesk",         "cat": "cm"},
+    # ── GOV / REGULATORY ──────────────────────────────────────────────────────
+    # SEC EDGAR filings, press releases, litigation — all keyword filtered
+    {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&dateb=&owner=include&count=40&search_text=&output=atom",
+                                                                    "source": "SEC Filings",     "cat": "cg"},
+    {"url": "https://www.sec.gov/rss/news/press.xml",               "source": "SEC News",        "cat": "cg"},
+    {"url": "https://www.sec.gov/rss/litigation/litreleases.xml",   "source": "SEC Litigation",  "cat": "cg"},
+    {"url": "https://www.federalreserve.gov/feeds/press_all.xml",   "source": "Federal Reserve", "cat": "cg"},
 
-    {"url": "https://bitcoinmagazine.com/.rss/full/",
-     "source": "Bitcoin Magazine",  "cat": "cm"},
-
-    {"url": "https://theblock.co/rss.xml",
-     "source": "The Block",        "cat": "cm"},
-
-    {"url": "https://blockworks.co/feed",
-     "source": "Blockworks",       "cat": "cm"},
-
-    {"url": "https://thedefiant.io/feed",
-     "source": "The Defiant",      "cat": "cm"},
-
-    {"url": "https://cryptoslate.com/feed/",
-     "source": "CryptoSlate",      "cat": "cm"},
-
-    {"url": "https://beincrypto.com/feed/",
-     "source": "BeInCrypto",       "cat": "cm"},
-
-    {"url": "https://bitcoinist.com/feed/",
-     "source": "Bitcoinist",       "cat": "cm"},
-
-    {"url": "https://newsbtc.com/feed/",
-     "source": "NewsBTC",          "cat": "cm"},
-
-    {"url": "https://u.today/rss",
-     "source": "U.Today",          "cat": "cm"},
-
-    # ── WIRE / TRADITIONAL FINANCE ──
-    # Reuters official feeds (Feedburner-backed, very reliable)
-    {"url": "https://feeds.reuters.com/reuters/businessNews",
-     "source": "Reuters",          "cat": "cr"},
-
-    {"url": "https://feeds.reuters.com/reuters/technologyNews",
-     "source": "Reuters Tech",     "cat": "cr"},
-
-    # ── GOV / REGULATORY (all official public feeds, 100% legal & free) ──
-    {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&dateb=&owner=include&count=20&search_text=&output=atom",
-     "source": "SEC Filings",      "cat": "cg"},
-
-    {"url": "https://www.sec.gov/rss/news/press.xml",
-     "source": "SEC News",         "cat": "cg"},
-
-    {"url": "https://www.federalreserve.gov/feeds/press_all.xml",
-     "source": "Federal Reserve",  "cat": "cg"},
-
-    {"url": "https://www.cftc.gov/rss/pressreleases.xml",
-     "source": "CFTC",             "cat": "cg"},
-
-    # ── ONCHAIN / ANALYTICS ──
-    {"url": "https://insights.glassnode.com/rss/",
-     "source": "Glassnode",        "cat": "cc"},
-
-    # CryptoQuant blog — onchain analytics
-    {"url": "https://cryptoquant.com/feed",
-     "source": "CryptoQuant",      "cat": "cc"},
-
-    # ── WHALE MOVEMENTS ──
-    # Whale Alert free REST API — no RSS exists, we poll directly
-    # Free tier: 1000 calls/day, min $500k transactions
-    # Set WHALE_ALERT_API_KEY env var in Railway to enable
-    # Falls back to CryptoPanic whale tag if no key
+    # ── ONCHAIN / ANALYTICS ───────────────────────────────────────────────────
+    {"url": "https://insights.glassnode.com/rss/",                  "source": "Glassnode",       "cat": "cc"},
+    {"url": "https://cryptoquant.com/feed",                         "source": "CryptoQuant",     "cat": "cc"},
 ]
 
 WHALE_ALERT_KEY = os.environ.get("WHALE_ALERT_API_KEY", "")
 
-# ─── BREAKING KEYWORDS ────────────────────────────────────────────────────────
+# ── KEYWORD FILTERS ───────────────────────────────────────────────────────────
+# Applied to Wire (cr) and Gov (cg) feeds — broad public feeds need this
+CRYPTO_KEYWORDS = [
+    # Coins & assets
+    "bitcoin","btc","ethereum","eth","solana","sol","xrp","ripple",
+    "dogecoin","doge","cardano","ada","avalanche","avax","chainlink","link",
+    "hyperliquid","hype","bnb","tron","trx","polkadot","dot","litecoin","ltc",
+    # Companies holding or trading crypto
+    "strategy","microstrategy","bitmine","metaplanet","semler scientific",
+    "coinbase","binance","kraken","robinhood crypto","galaxy digital",
+    "grayscale","blackrock bitcoin","fidelity bitcoin","ark invest",
+    "tether","usdt","usdc","circle","paxos",
+    "ripple labs","consensys","chainanalysis","fireblocks",
+    # Concepts that are always crypto-relevant
+    "crypto","cryptocurrency","blockchain","defi","nft","web3",
+    "stablecoin","digital asset","virtual currency","cbdc",
+    "bitcoin etf","spot etf","crypto etf","bitcoin reserve",
+    "mining","proof of stake","proof of work","validator",
+    "wallet","cold storage","custody","staking","yield farming",
+    "layer 2","lightning network","rollup","zero knowledge",
+]
+
+# ── BREAKING KEYWORDS ─────────────────────────────────────────────────────────
 BREAKING_WORDS = [
     "breaking","urgent","flash","just in","hack","hacked","seized","exploit",
     "collapse","halt","emergency","sanctioned","arrested","insolvent",
@@ -170,6 +155,11 @@ def make_item(entry, feed):
         return None
     seen_keys.add(key)
     summary = strip_html(entry.get("summary") or "")[:220]
+    # Wire and Gov feeds: keyword filter unless source is pre-filtered by topic
+    if feed.get("cat") in ("cr", "cg") and not feed.get("prefiltered"):
+        text = (headline + " " + summary).lower()
+        if not any(k in text for k in CRYPTO_KEYWORDS):
+            return None
     return {
         "id":        str(uuid.uuid4()),
         "source":    feed["source"],
