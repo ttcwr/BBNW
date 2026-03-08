@@ -883,7 +883,7 @@ body{animation:flicker 8s ease infinite;}
   <div class="bar-r">
     <button class="vbtn on" onclick="setView(this,'compact')">Compact</button>
     <button class="vbtn" onclick="setView(this,'full')">Full</button>
-    <button class="rfbtn" id="rfbtn" onclick="fetchLive()">
+    <button class="rfbtn" id="rfbtn" onclick="reconnectWS()">
       <span class="apip"></span><span class="rfi">↻</span><span id="rfl">Refresh</span>
     </button>
   </div>
@@ -1130,141 +1130,20 @@ function setView(el,v){
 /* ══ LIVE FEED LAYER ══ */
 
 /* allorigins is the most reliable free CORS proxy in 2025 */
-function proxyUrl(url) {
-  return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-}
-
-const RSS_FEEDS = [
-  /* Media */
-  {url:'https://cointelegraph.com/rss',                          src:'CoinTelegraph'},
-  {url:'https://decrypt.co/feed',                                src:'Decrypt'},
-  {url:'https://www.coindesk.com/arc/outboundfeeds/rss/',        src:'CoinDesk'},
-  {url:'https://bitcoinmagazine.com/.rss/full/',                 src:'Bitcoin Magazine'},
-  {url:'https://theblock.co/rss.xml',                            src:'The Block'},
-  {url:'https://blockworks.co/feed',                             src:'Blockworks'},
-  {url:'https://thedefiant.io/feed',                             src:'The Defiant'},
-  {url:'https://cryptoslate.com/feed/',                          src:'CryptoSlate'},
-  {url:'https://beincrypto.com/feed/',                           src:'BeInCrypto'},
-  {url:'https://bitcoinist.com/feed/',                           src:'Bitcoinist'},
-  {url:'https://newsbtc.com/feed/',                              src:'NewsBTC'},
-  {url:'https://u.today/rss',                                    src:'U.Today'},
-  /* Wire */
-  {url:'https://chainwire.org/feed/',                            src:'Chainwire'},
-  {url:'https://www.globenewswire.com/RssFeed/subjectcode/BC-Blockchain', src:'GlobeNewswire'},
-  /* Onchain */
-  {url:'https://insights.glassnode.com/rss/',                    src:'Glassnode'},
-  {url:'https://cryptoquant.com/feed',                           src:'CryptoQuant'},
-];
-
-function parseRSS(xml, src) {
-  try {
-    const doc = new DOMParser().parseFromString(xml, 'text/xml');
-    const els = [...doc.querySelectorAll('item, entry')];
-    return els.slice(0, 20).map(el => {
-      const title = el.querySelector('title')?.textContent?.trim() || '';
-      const link  = el.querySelector('link')?.textContent?.trim()
-                 || el.querySelector('link')?.getAttribute('href') || '#';
-      const pub   = el.querySelector('pubDate')?.textContent
-                 || el.querySelector('updated')?.textContent
-                 || el.querySelector('dc\\:date')?.textContent || '';
-      return { title, link, pubDate: pub, src };
-    }).filter(x => x.title.length > 15);
-  } catch(e) {
-    console.warn('[BBNW] XML parse error:', e);
-    return [];
-  }
-}
-
-async function fetchOneFeed(feed) {
-  const proxied = proxyUrl(feed.url);
-  try {
-    const r = await fetch(proxied, { signal: AbortSignal.timeout(10000) });
-    if (!r.ok) { console.warn('[BBNW]', feed.src, 'HTTP', r.status); return []; }
-    const txt = await r.text();
-    if (!txt || txt.length < 100) { console.warn('[BBNW]', feed.src, 'empty response'); return []; }
-    const items = parseRSS(txt, feed.src);
-    console.log('[BBNW]', feed.src, '→', items.length, 'items');
-    return items;
-  } catch(e) {
-    console.warn('[BBNW]', feed.src, 'failed:', e.message);
-    return [];
-  }
-}
-
-function ingestBatch(rawItems) {
-  let added = 0;
-  /* newest first within each batch */
-  rawItems.sort((a,b) => new Date(b.pubDate||0) - new Date(a.pubDate||0));
-  rawItems.forEach(raw => {
-    const hl = (raw.title||'')
-      .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
-      .replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n))
-      .replace(/<[^>]+>/g,'').trim();
-    if (!hl || hl.length < 15) return;
-    const key = hl.slice(0,60).toLowerCase();
-    if (seen.has(key)) return;
-    seen.add(key);
-    items.unshift({
-      id: 'live_' + (Date.now() + added) + '_' + Math.random().toString(36).slice(2,5),
-      source: raw.src,
-      cat:    fS(raw.src||'').c || 'cm',
-      headline: hl,
-      ai: 'Live feed — add your analysis.',
-      score: isBrk(hl) ? 0.88 + Math.random()*0.1 : 0.38 + Math.random()*0.45,
-      time: hm(raw.pubDate ? new Date(raw.pubDate) : new Date()),
-      _ts:  raw.pubDate ? new Date(raw.pubDate).toISOString() : new Date().toISOString(),
-      status: 'pending',
-      url: raw.link || '#',
-      _new: true,
-    });
-    totalN++;
-    added++;
-  });
-  return added;
-}
-
-async function fetchLive() {
-  const btn = document.getElementById('rfbtn');
-  btn.classList.add('spin');
-  setRf('', 'Scanning…');
-  document.getElementById('ltxt').textContent = 'SCANNING';
-
-  console.log('[BBNW] Starting fetch of', RSS_FEEDS.length, 'feeds…');
-
-  /* All feeds fire at once — don't wait for slow ones */
-  const results = await Promise.allSettled(RSS_FEEDS.map(f => fetchOneFeed(f)));
-
-  let allRaw = [];
-  results.forEach(r => { if (r.status === 'fulfilled') allRaw = allRaw.concat(r.value); });
-
-  console.log('[BBNW] Total raw items before dedup:', allRaw.length);
-  const added = ingestBatch(allRaw);
-  console.log('[BBNW] Added after dedup:', added);
-
-  btn.classList.remove('spin');
-
-  if (added > 0) {
-    render(); stats();
-    setRf('live', added + ' signals');
-    document.getElementById('ltxt').textContent = 'LIVE';
-    showT('> ' + added + ' SIGNALS LOADED', 'rgba(0,255,65,.08)', 'var(--green)');
-  } else {
-    setRf('err', 'No feeds');
-    document.getElementById('ltxt').textContent = 'OFFLINE';
-    showT('> ALL PROXIES FAILED — CHECK CONSOLE', 'rgba(255,42,42,.1)', 'var(--red)');
-  }
-}
-
 function setRf(s,t) {
   document.getElementById('rfbtn').className = 'rfbtn ' + s;
   document.getElementById('rfl').textContent = t;
 }
 
-setInterval(fetchLive, 4 * 60 * 1000);
 
 
 /* WebSocket for when backend exists */
 let ws;
+function reconnectWS(){
+  if(ws) try{ws.close();}catch(_){}
+  setRf('','Reconnecting…');
+  setTimeout(connectWS, 300);
+}
 function connectWS(){
   if(!BK) return;
   try{
@@ -1281,7 +1160,7 @@ function connectWS(){
         const live=m.items.map(norm);
         if(live.length>0){
           // Sort newest first by time string (HH:MM)
-          live.sort((a,b)=>b._ts.localeCompare(a._ts));
+          live.sort((a,b)=>new Date(b._ts)-new Date(a._ts));
           items=live;
           totalN=items.length;
           seen.clear();
@@ -1293,7 +1172,7 @@ function connectWS(){
         newNormed.forEach(ni=>{ni._new=true;seen.add(ni.headline.slice(0,60).toLowerCase());totalN++;});
         // Merge and re-sort everything newest first
         items=[...newNormed,...items];
-        items.sort((a,b)=>b._ts.localeCompare(a._ts));
+        items.sort((a,b)=>new Date(b._ts)-new Date(a._ts));
       }
       else if(m.type==='status_update'){const it=items.find(x=>x.id===m.item_id);if(it)it.status=m.status;}
       render();stats();
@@ -1338,6 +1217,9 @@ function render(){
       if(!WIRE_KW.some(k=>hl.includes(k))) return false;
     }
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
+    /* 48h cutoff */
+    if(it._ts){const age=(Date.now()-new Date(it._ts))/3600000;if(age>48)return false;}
+    if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase())return false;
     if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase()) return false;
     return true;
   });
@@ -1584,7 +1466,6 @@ connectWS();
 setInterval(()=>render(), 30000);
 document.getElementById('feed')?.classList.add('feed-compact');
 render();
-setTimeout(fetchLive, 600);
 
 
 /* ══ ETH PRICE ══ */
