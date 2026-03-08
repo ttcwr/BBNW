@@ -452,7 +452,7 @@ body{animation:flicker 8s ease infinite;}
 
 /* Card header */
 .nc-head{display:flex;align-items:center;gap:7px;padding:9px 12px 0 13px;}
-.nc-time{font-family:var(--mono);font-size:9px;color:rgba(160,180,200,.4);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;min-width:32px;}
+.nc-time{font-family:var(--mono);font-size:9px;color:#ff4444;font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;letter-spacing:.04em;}
 .nc-src{
   display:inline-flex;align-items:center;
   font-family:var(--mono);font-size:9.5px;font-weight:500;
@@ -1083,9 +1083,7 @@ function ingestItem(raw, sourceName){
     ai:'Live — add your analysis.',
     score:isBrk(hl)?0.88+Math.random()*0.1:0.42+Math.random()*0.42,
     time:hm(raw.pubDate?new Date(raw.pubDate):new Date()),
-    status:'pending',
-    url:raw.link||'#',
-    _new:true,
+    _ts: raw.pubDate?new Date(raw.pubDate).toISOString():new Date().toISOString(),
   });
   totalN++;
   return true;
@@ -1137,15 +1135,25 @@ function proxyUrl(url) {
 }
 
 const RSS_FEEDS = [
-  {url:'https://cointelegraph.com/rss',           src:'CoinTelegraph'},
-  {url:'https://decrypt.co/feed',                 src:'Decrypt'},
-  {url:'https://bitcoinist.com/feed/',             src:'Bitcoinist'},
-  {url:'https://ambcrypto.com/feed/',              src:'AMBCrypto'},
-  {url:'https://newsbtc.com/feed/',                src:'NewsBTC'},
-  {url:'https://beincrypto.com/feed/',             src:'BeInCrypto'},
-  {url:'https://cryptopotato.com/feed/',           src:'CryptoPotato'},
-  {url:'https://u.today/rss',                      src:'U.Today'},
-  {url:'https://bitcoinmagazine.com/.rss/full/',   src:'Bitcoin Magazine'},
+  /* Media */
+  {url:'https://cointelegraph.com/rss',                          src:'CoinTelegraph'},
+  {url:'https://decrypt.co/feed',                                src:'Decrypt'},
+  {url:'https://www.coindesk.com/arc/outboundfeeds/rss/',        src:'CoinDesk'},
+  {url:'https://bitcoinmagazine.com/.rss/full/',                 src:'Bitcoin Magazine'},
+  {url:'https://theblock.co/rss.xml',                            src:'The Block'},
+  {url:'https://blockworks.co/feed',                             src:'Blockworks'},
+  {url:'https://thedefiant.io/feed',                             src:'The Defiant'},
+  {url:'https://cryptoslate.com/feed/',                          src:'CryptoSlate'},
+  {url:'https://beincrypto.com/feed/',                           src:'BeInCrypto'},
+  {url:'https://bitcoinist.com/feed/',                           src:'Bitcoinist'},
+  {url:'https://newsbtc.com/feed/',                              src:'NewsBTC'},
+  {url:'https://u.today/rss',                                    src:'U.Today'},
+  /* Wire */
+  {url:'https://chainwire.org/feed/',                            src:'Chainwire'},
+  {url:'https://www.globenewswire.com/RssFeed/subjectcode/BC-Blockchain', src:'GlobeNewswire'},
+  /* Onchain */
+  {url:'https://insights.glassnode.com/rss/',                    src:'Glassnode'},
+  {url:'https://cryptoquant.com/feed',                           src:'CryptoQuant'},
 ];
 
 function parseRSS(xml, src) {
@@ -1199,10 +1207,12 @@ function ingestBatch(rawItems) {
     items.unshift({
       id: 'live_' + (Date.now() + added) + '_' + Math.random().toString(36).slice(2,5),
       source: raw.src,
+      cat:    fS(raw.src||'').c || 'cm',
       headline: hl,
       ai: 'Live feed — add your analysis.',
       score: isBrk(hl) ? 0.88 + Math.random()*0.1 : 0.38 + Math.random()*0.45,
       time: hm(raw.pubDate ? new Date(raw.pubDate) : new Date()),
+      _ts:  raw.pubDate ? new Date(raw.pubDate).toISOString() : new Date().toISOString(),
       status: 'pending',
       url: raw.link || '#',
       _new: true,
@@ -1305,7 +1315,8 @@ function norm(r){
     status:  r.status||'pending',
     url:     r.url||'#',
     time:    r.published||hm(new Date()),
-    _ts:     r.published||'',
+    _ts:     r.published||new Date().toISOString(),
+    _ts:     r.published||r.time||new Date().toISOString(),
   };
 }
 
@@ -1377,7 +1388,7 @@ function render(){
     return `<div class="ncard ${s.c}${brk?' brk':''} ${it.status}${isSel?' sel':''}${it._new?' fl':''}${isExp?' exp':''}"
          id="nc-${it.id}" onclick="doSel('${it.id}')">
       <div class="nc-head">
-        <span class="nc-time">${it.time}</span>
+        <span class="nc-time">${timeAgo(it._ts||it.time)}</span>
         ${brkb}
         <span class="nc-src">${s.l}</span>
         <span class="nc-relpct" style="color:${scoreColor};margin-left:auto;">${pct}%</span>
@@ -1548,7 +1559,29 @@ function updCC(){document.getElementById('cc').textContent=document.getElementBy
 document.getElementById('ta').addEventListener('input',updCC);
 function hm(d){return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
 
+function timeAgo(tsStr){
+  if(!tsStr) return '—';
+  let d;
+  if(typeof tsStr==='string' && tsStr.length<=5 && tsStr.includes(':')){
+    const now=new Date(); const [h,m]=tsStr.split(':').map(Number);
+    d=new Date(now); d.setHours(h,m,0,0);
+    if(d>now) d.setDate(d.getDate()-1);
+  } else {
+    d=new Date(tsStr);
+  }
+  const sec=Math.floor((Date.now()-d)/1000);
+  if(isNaN(sec)||sec<0) return '—';
+  if(sec<10)  return 'JUST NOW';
+  if(sec<60)  return sec+' SEC AGO';
+  const min=Math.floor(sec/60);
+  if(min<60)  return min+' MIN AGO';
+  const hr=Math.floor(min/60);
+  if(hr<24)   return hr+' HR AGO';
+  return Math.floor(hr/24)+' DAYS AGO';
+}
+
 connectWS();
+setInterval(()=>render(), 30000);
 document.getElementById('feed')?.classList.add('feed-compact');
 render();
 setTimeout(fetchLive, 600);
