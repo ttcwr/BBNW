@@ -10,29 +10,29 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
 :root{
-  --bg:    #000000;
-  --s0:    #010501;
-  --s1:    #020a02;
-  --s2:    #031203;
-  --s3:    #041804;
-  --s4:    #051e05;
-  --s5:    #072507;
+  --bg:    #080810;
+  --s0:    #0a0a14;
+  --s1:    #0d0d18;
+  --s2:    #10101c;
+  --s3:    #121220;
+  --s4:    #151524;
+  --s5:    #181828;
 
-  /* Border ladder */
-  --b0: rgba(0,255,65,.04);
-  --b1: rgba(0,255,65,.08);
-  --b2: rgba(0,255,65,.14);
-  --b3: rgba(0,255,65,.24);
-  --b4: rgba(0,255,65,.40);
-  --b5: rgba(0,255,65,.65);
+  /* Border ladder — neutral blue-grey */
+  --b0: rgba(140,180,255,.04);
+  --b1: rgba(140,180,255,.07);
+  --b2: rgba(140,180,255,.12);
+  --b3: rgba(140,180,255,.20);
+  --b4: rgba(140,180,255,.35);
+  --b5: rgba(140,180,255,.55);
 
-  /* Text */
-  --t0: #00ff41;
-  --t1: #00e838;
-  --t2: #00b82c;
-  --t3: #009924;
-  --t4: #006018;
-  --t5: #002a09;
+  /* Text — white/light headlines, green only as accent */
+  --t0: #e2e8f0;
+  --t1: #94a3b8;
+  --t2: #64748b;
+  --t3: #475569;
+  --t4: #2d3748;
+  --t5: #1a202c;
 
   /* Yellow accent — kept from original */
   --y:   #f5d800;
@@ -70,7 +70,7 @@ body::after{
   position:fixed;inset:0;z-index:9999;
   background:repeating-linear-gradient(
     0deg,
-    rgba(0,0,0,.08) 0px, rgba(0,0,0,.08) 1px,
+    rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px,
     transparent 1px, transparent 3px
   );
 }
@@ -172,7 +172,7 @@ body{animation:flicker 8s ease infinite;}
 .btc-pr{font-family:var(--mono);font-size:17px;font-weight:600;color:var(--y);letter-spacing:.04em;line-height:1;text-shadow:0 0 10px var(--y);}
 .eth-pr{font-family:var(--mono);font-size:17px;font-weight:600;color:var(--cx);letter-spacing:.04em;line-height:1;text-shadow:0 0 10px var(--cx);}
 .btc-ch{font-family:var(--mono);font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:2px;border:1px solid;}
-.btc-ch.up{color:var(--green);background:rgba(0,255,65,.08);border-color:rgba(0,255,65,.2);}
+.btc-ch.up{color:var(--green);background:rgba(0,255,65,.08);border-color:rgba(140,160,200,.2);}
 .btc-ch.dn{color:var(--red);background:rgba(255,42,42,.08);border-color:rgba(255,42,42,.2);}
 
 .live-w{display:flex;align-items:center;gap:7px;padding:0 16px;border-left:1px solid var(--b2);}
@@ -387,16 +387,16 @@ body{animation:flicker 8s ease infinite;}
    NEWS CARD
 ═══════════════════════════════════ */
 .ncard{
-  background:#031503;
-  border:1px solid rgba(0,255,65,.22);
-  border-radius:3px;
+  background:#0c0c18;
+  border:1px solid rgba(0,255,65,.15);
+  border-radius:4px;
   position:relative;cursor:pointer;
-  transition:border-color .12s,background .1s,box-shadow .15s;
+  transition:border-color .15s,background .12s,box-shadow .18s;
   animation:cin .22s ease both;
   display:flex;
   flex-direction:column;
-  min-height:62px;
-  box-shadow:0 1px 4px rgba(0,0,0,.5);
+  overflow:visible;
+  box-shadow:0 1px 3px rgba(0,0,0,.6);
   pointer-events:all;
 }
 @keyframes cin{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:translateX(0);}}
@@ -413,7 +413,7 @@ body{animation:flicker 8s ease infinite;}
 .ncard.cg::before{background:var(--cg);}
 .ncard.cr::before{background:var(--cr);}
 
-.ncard:hover{border-color:rgba(0,255,65,.4);background:#041f04;box-shadow:0 0 16px rgba(0,255,65,.08),0 2px 8px rgba(0,0,0,.4);z-index:10;position:relative;}
+.ncard:hover{border-color:rgba(100,180,255,.25);background:#0e0e18;box-shadow:0 0 12px rgba(80,140,255,.06),0 2px 8px rgba(0,0,0,.5);z-index:10;position:relative;}
 .ncard:hover::before{opacity:1;}
 .ncard.cx:hover::before{box-shadow:2px 0 14px rgba(0,207,255,.5);}
 .ncard.cw:hover::before{box-shadow:2px 0 14px rgba(191,95,255,.5);}
@@ -452,7 +452,7 @@ body{animation:flicker 8s ease infinite;}
 
 /* Card header */
 .nc-head{display:flex;align-items:center;gap:7px;padding:9px 12px 0 13px;}
-.nc-time{font-family:var(--mono);font-size:9px;color:rgba(0,255,65,.4);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;min-width:32px;}
+.nc-time{font-family:var(--mono);font-size:9px;color:rgba(160,180,200,.4);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;min-width:32px;}
 .nc-src{
   display:inline-flex;align-items:center;
   font-family:var(--mono);font-size:9.5px;font-weight:500;
@@ -490,7 +490,7 @@ body{animation:flicker 8s ease infinite;}
 }
 .nc-hl{
   font-family:var(--sans);font-size:13.5px;font-weight:500;
-  color:var(--t0);line-height:1.5;
+  color:#dde6f0;line-height:1.5;
   padding:7px 13px 5px 13px;
   letter-spacing:.01em;transition:color .07s;
 }
@@ -501,7 +501,8 @@ body{animation:flicker 8s ease infinite;}
 /* ── TICKER TAGS — coin icons below headline ── */
 .nc-tickers{
   display:flex;align-items:center;gap:5px;flex-wrap:wrap;
-  padding:0 14px 9px 14px;
+  padding:4px 14px 10px 14px;
+  overflow:visible;
 }
 .nc-tick{
   display:inline-flex;align-items:center;gap:4px;
@@ -869,7 +870,6 @@ body{animation:flicker 8s ease infinite;}
   <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
   <div class="cat cg on" data-c="cg" onclick="toggleCat(this)"><div class="cpip"></div>.Gov</div>
   <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain</div>
-  <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
 
   <div class="cat-div"></div>
 
@@ -899,30 +899,30 @@ body{animation:flicker 8s ease infinite;}
     </div>
     <div class="src-scroll">
       <div class="sb-hdr"><span class="sb-lbl">Media</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">CryptoSlate</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">BeInCrypto</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'CoinTelegraph')"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'CoinDesk')"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Block')"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Decrypt')"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoin Magazine')"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Blockworks')"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Defiant')"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'CryptoSlate')"><div class="src-dot cm"></div><span class="src-name">CryptoSlate</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'BeInCrypto')"><div class="src-dot cm"></div><span class="src-name">BeInCrypto</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoinist')"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'NewsBTC')"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'U.Today')"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
       <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">Wire</span></div>
-      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">Chainwire</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">GlobeNewswire</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">BusinessWire</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cr"><div class="src-dot cr"></div><span class="src-name">PRNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'Chainwire')"><div class="src-dot cr"></div><span class="src-name">Chainwire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'GlobeNewswire')"><div class="src-dot cr"></div><span class="src-name">GlobeNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'BusinessWire')"><div class="src-dot cr"></div><span class="src-name">BusinessWire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'PRNewswire')"><div class="src-dot cr"></div><span class="src-name">PRNewswire</span><span class="src-badge bl">LIVE</span></div>
       <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">.Gov</span></div>
-      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC Filings</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">SEC News</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cg"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'SEC Filings')"><div class="src-dot cg"></div><span class="src-name">SEC Filings</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'SEC News')"><div class="src-dot cg"></div><span class="src-name">SEC News</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'Federal Reserve')"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
       <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">Onchain</span></div>
-      <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cc"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cc" onclick="toggleSrcRow(this,'Glassnode')"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cc" onclick="toggleSrcRow(this,'CryptoQuant')"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
     </div>
 
     <!-- Keyboard shortcuts -->
@@ -1104,6 +1104,18 @@ const WS_URL = BK.replace('https://','wss://').replace('http://','ws://') + '/ws
 function toggleCat(el){
   const c=el.dataset.c;
   onCats.has(c)?(onCats.delete(c),el.classList.remove('on')):(onCats.add(c),el.classList.add('on'));
+  render();
+}
+let srcFilter=null;
+function toggleSrcRow(el,src){
+  if(srcFilter===src){
+    srcFilter=null;
+    el.classList.remove('active-filter');
+  } else {
+    document.querySelectorAll('.src-row').forEach(r=>r.classList.remove('active-filter'));
+    srcFilter=src;
+    el.classList.add('active-filter');
+  }
   render();
 }
 function setView(el,v){
@@ -1313,6 +1325,7 @@ function render(){
       if(!WIRE_KW.some(k=>hl.includes(k))) return false;
     }
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
+    if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase()) return false;
     return true;
   });
   if(!list.length){feed.innerHTML='<div class="feed-empty"><span class="fe-ico">◌</span><span class="fe-t">No items match filters</span></div>';stats();return;}
