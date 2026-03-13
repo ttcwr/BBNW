@@ -1258,9 +1258,9 @@ function connectWS(){
   try{
     ws=new WebSocket(WS_URL);
     ws.onopen=()=>{
-      document.getElementById('ltxt').textContent='LIVE';
-      document.getElementById('rfbtn').className='rfbtn live';
-      document.getElementById('rfl').textContent='Backend';
+      const _lt=document.getElementById('ltxt');if(_lt)_lt.textContent='LIVE';
+      const _rb=document.getElementById('rfbtn');if(_rb)_rb.className='rfbtn live';
+      const _rl=document.getElementById('rfl');if(_rl)_rl.textContent='Backend';
     };
     ws.onmessage=e=>{
       const m=JSON.parse(e.data);
@@ -1526,6 +1526,7 @@ function tickClk(){
 setInterval(tickClk,1000);tickClk();
 
 let bBase=87420,bOpen=85900;
+const sparkData=[];
 async function fetchBTC(){
   try{const r=await fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot',{signal:AbortSignal.timeout(4000)});const d=await r.json();bBase=parseFloat(d.data?.amount||bBase);if(Math.abs(bBase-bOpen)>bBase*.06)bOpen=bBase*.982;}catch(_){}updBTC();
 }
@@ -1546,8 +1547,7 @@ function updBTC(){
 }
 fetchBTC();setInterval(updBTC,5000);setInterval(fetchBTC,60000);
 
-function updCC(){document.getElementById('cc').textContent=document.getElementById('ta').value.length+' chars';}
-document.getElementById('ta').addEventListener('input',updCC);
+// compose panel removed
 function hm(d){return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
 
 function timeAgo(tsStr){
@@ -1597,7 +1597,6 @@ function updETH(){
 fetchETH();setInterval(updETH,5000);setInterval(fetchETH,60000);
 
 /* ══ SPARKLINE ══ */
-const sparkData=[];
 function drawSpark(){
   const c=document.getElementById('btc-spark');if(!c)return;
   const ctx=c.getContext('2d');
