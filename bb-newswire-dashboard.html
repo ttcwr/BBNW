@@ -1036,7 +1036,96 @@ body{animation:flicker 8s ease infinite;}
 .ob-asset-btn.active{border-color:var(--t2);color:var(--t0);background:rgba(255,255,255,.04);}
 .ob-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px;}
 .ob-stat{display:flex;flex-direction:column;gap:1px;}
-.ob-stat-l{font-family:var(--mono);font-size:6.5px;color:var(--t4);letter-spacing:.18em;text-transform:uppercase;}
+.ob-stat-l{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;text-transform:uppercase;}
+
+.ob-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.ob-expand-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:3px;
+  background:transparent;border:1px solid var(--b2);
+  color:var(--t3);cursor:pointer;transition:all .12s;flex-shrink:0;
+}
+.ob-expand-btn:hover{border-color:var(--b4);color:var(--t0);}
+
+.ob-brand{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-top:1px solid var(--b1);
+  flex-shrink:0;
+}
+.ob-brand-text{
+  font-family:var(--mono);font-size:7px;
+  color:var(--t4);letter-spacing:.14em;text-transform:uppercase;
+}
+.ob-brand-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#00DCFA;margin-left:auto;
+  animation:brand-pulse 2s ease-in-out infinite;
+}
+@keyframes brand-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,220,250,.4);}50%{opacity:.7;box-shadow:0 0 0 4px rgba(0,220,250,0);}}
+
+/* ── EXPANDED ORDERBOOK MODE ── */
+.ob-expanded .sidebar{display:none;}
+.ob-expanded .feed-col{display:none;}
+.ob-expanded #ob-panel{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:500;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto;
+  background:var(--bg);
+  overflow:hidden;
+}
+.ob-expanded #ob-panel .ob-header{
+  grid-column:1/3;
+  display:flex;align-items:center;gap:24px;
+  padding:12px 24px;
+  border-bottom:1px solid var(--b2);
+  flex-direction:row;
+}
+.ob-expanded #ob-panel .ob-top-row{margin-bottom:0;flex:0 0 auto;}
+.ob-expanded #ob-panel .ob-stats{
+  display:flex;flex-direction:row;gap:24px;flex:1;
+  grid-row:unset;
+}
+.ob-expanded #ob-panel .ob-cols-header{
+  grid-column:1/3;
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  padding:6px 24px;
+}
+.ob-expanded #ob-panel .ob-book{
+  grid-column:1/3;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr auto 1fr;
+  overflow:hidden;
+  flex:1;
+}
+.ob-expanded #ob-panel .ob-asks{
+  grid-column:1/1;grid-row:1/4;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  border-right:1px solid var(--b2);overflow:hidden;
+}
+.ob-expanded #ob-panel .ob-spread-row{
+  grid-column:2/3;grid-row:2/3;
+  flex-shrink:0;border-top:none;border-bottom:none;
+  padding:8px 24px;align-self:center;
+}
+.ob-expanded #ob-panel .ob-bids{
+  grid-column:2/3;grid-row:1/4;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  padding-top:44px;overflow:hidden;
+}
+.ob-expanded #ob-panel .ob-brand{
+  grid-column:1/3;
+  padding:8px 24px;
+}
+.ob-expanded #ob-panel .ob-row{padding:4px 24px;}
+.ob-expanded #ob-panel .ob-price{font-size:15px!important;}
+.ob-expanded #ob-panel .ob-size,
+.ob-expanded #ob-panel .ob-total{font-size:14px!important;}
+.ob-expanded .ob-expand-btn svg{transform:rotate(45deg);}
+.ob-expanded .topbar,.ob-expanded .statstrip,.ob-expanded .catbar{display:none;}
+
 .ob-stat-v{font-family:var(--mono);font-size:13px;color:var(--t0);font-variant-numeric:tabular-nums;letter-spacing:.01em;font-weight:600;}
 
 .ob-cols-header{
@@ -1421,10 +1510,12 @@ body{animation:flicker 8s ease infinite;}
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoin Magazine')"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Blockworks')"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'The Defiant')"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm" onclick="toggleSrcRow(this,'BeInCrypto')"><div class="src-dot cm"></div><span class="src-name">BeInCrypto</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" style="opacity:.35;pointer-events:none;text-decoration:line-through;" onclick="toggleSrcRow(this,'BeInCrypto')"><div class="src-dot cm"></div><span class="src-name" style="text-decoration:line-through">BeInCrypto</span><span class="src-badge bl">OFF</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoinist')"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'NewsBTC')"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'U.Today')"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Forbes')"><div class="src-dot cm"></div><span class="src-name">Forbes</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Information')"><div class="src-dot cm"></div><span class="src-name">The Information</span><span class="src-badge bl">LIVE</span></div>
       <div class="sb-hdr" style="margin-top:8px"><span class="sb-lbl">Wire</span></div>
       <div class="src-row cr" onclick="toggleSrcRow(this,'Chainwire')"><div class="src-dot cr"></div><span class="src-name">Chainwire</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cr" onclick="toggleSrcRow(this,'GlobeNewswire')"><div class="src-dot cr"></div><span class="src-name">GlobeNewswire</span><span class="src-badge bl">LIVE</span></div>
@@ -1469,18 +1560,22 @@ body{animation:flicker 8s ease infinite;}
   </div>
 
   <!-- RIGHT PANEL — ORDERBOOK -->
-  <div class="right">
+  <div class="right" id="ob-panel">
 
-    <!-- Asset selector + stats -->
     <div class="ob-header">
-      <div class="ob-selector">
-        <button class="ob-asset-btn active" id="ob-btn-BTC" onclick="switchAsset('BTC')">
-          <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M22.2 13.9c.3-2-1.2-3.1-3.3-3.8l.7-2.7-1.6-.4-.7 2.6-1.3-.3.7-2.6-1.6-.4-.7 2.7-1-.3-2.2-.5-.4 1.7s1.2.3 1.1.3c.6.2.7.6.7.9l-1.7 6.9c-.1.2-.3.5-.8.4 0 0-1.1-.3-1.1-.3l-.8 1.8 2.1.5 1.1.3-.7 2.8 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.8c2.8.5 4.9.3 5.8-2.2.7-2-.0-3.1-1.5-3.9 1.1-.2 1.9-1 2.1-2.4zm-3.8 5.4c-.5 2-3.9.9-5 .6l.9-3.5c1.1.3 4.6.8 4.1 2.9zm.5-5.4c-.5 1.8-3.3.9-4.2.7l.8-3.2c.9.2 3.8.7 3.4 2.5z" fill="white"/></svg>
-          BTC
-        </button>
-        <button class="ob-asset-btn" id="ob-btn-ETH" onclick="switchAsset('ETH')">
-          <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.5 4v8.9l7.5 3.4L16.5 4z" fill="white" fill-opacity=".6"/><path d="M16.5 4L9 16.3l7.5-3.4V4z" fill="white"/><path d="M16.5 21.9v6.1l7.5-10.4-7.5 4.3z" fill="white" fill-opacity=".6"/><path d="M16.5 28v-6.1L9 17.6 16.5 28z" fill="white"/><path d="M16.5 20.6l7.5-4.3-7.5-3.4v7.7z" fill="white" fill-opacity=".2"/><path d="M9 16.3l7.5 4.3v-7.7L9 16.3z" fill="white" fill-opacity=".6"/></svg>
-          ETH
+      <div class="ob-top-row">
+        <div class="ob-selector">
+          <button class="ob-asset-btn active" id="ob-btn-BTC" onclick="switchAsset('BTC')">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M22.2 13.9c.3-2-1.2-3.1-3.3-3.8l.7-2.7-1.6-.4-.7 2.6-1.3-.3.7-2.6-1.6-.4-.7 2.7-1-.3-2.2-.5-.4 1.7s1.2.3 1.1.3c.6.2.7.6.7.9l-1.7 6.9c-.1.2-.3.5-.8.4 0 0-1.1-.3-1.1-.3l-.8 1.8 2.1.5 1.1.3-.7 2.8 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.8c2.8.5 4.9.3 5.8-2.2.7-2-.0-3.1-1.5-3.9 1.1-.2 1.9-1 2.1-2.4zm-3.8 5.4c-.5 2-3.9.9-5 .6l.9-3.5c1.1.3 4.6.8 4.1 2.9zm.5-5.4c-.5 1.8-3.3.9-4.2.7l.8-3.2c.9.2 3.8.7 3.4 2.5z" fill="white"/></svg>
+            BTC
+          </button>
+          <button class="ob-asset-btn" id="ob-btn-ETH" onclick="switchAsset('ETH')">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.5 4v8.9l7.5 3.4L16.5 4z" fill="white" fill-opacity=".6"/><path d="M16.5 4L9 16.3l7.5-3.4V4z" fill="white"/><path d="M16.5 21.9v6.1l7.5-10.4-7.5 4.3z" fill="white" fill-opacity=".6"/><path d="M16.5 28v-6.1L9 17.6 16.5 28z" fill="white"/><path d="M16.5 20.6l7.5-4.3-7.5-3.4v7.7z" fill="white" fill-opacity=".2"/><path d="M9 16.3l7.5 4.3v-7.7L9 16.3z" fill="white" fill-opacity=".6"/></svg>
+            ETH
+          </button>
+        </div>
+        <button class="ob-expand-btn" id="ob-expand-btn" onclick="toggleObExpand()" title="Expand orderbook">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
         </button>
       </div>
       <div class="ob-stats">
@@ -1491,14 +1586,12 @@ body{animation:flicker 8s ease infinite;}
       </div>
     </div>
 
-    <!-- Column headers -->
     <div class="ob-cols-header">
       <span class="ob-ch">PRICE</span>
       <span class="ob-ch right">SIZE</span>
       <span class="ob-ch right">TOTAL</span>
     </div>
 
-    <!-- Book -->
     <div class="ob-book">
       <div class="ob-asks" id="ob-asks"></div>
       <div class="ob-spread-row">
@@ -1508,6 +1601,12 @@ body{animation:flicker 8s ease infinite;}
         <span class="ob-conn" id="ob-conn">● CONNECTING</span>
       </div>
       <div class="ob-bids" id="ob-bids"></div>
+    </div>
+
+    <div class="ob-brand">
+      <svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#00DCFA"/><path d="M12 28L20 12L28 28" stroke="#001A1E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 23H25.5" stroke="#001A1E" stroke-width="3" stroke-linecap="round"/></svg>
+      <span class="ob-brand-text">LIVE DATA BY HYPERLIQUID</span>
+      <span class="ob-brand-dot"></span>
     </div>
 
   </div>
@@ -1544,7 +1643,9 @@ const SM={
   'beincrypto':{l:'[BEINCRYPTO]',c:'cm'},
   'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
   'newsbtc':{l:'[NEWSBTC]',c:'cm'},
-  'u.today':{l:'[U.TODAY]',c:'cm'},'utoday':{l:'[U.TODAY]',c:'cm'},
+  'u.today':{l:'[U.TODAY]',c:'cm'},
+  'forbes':{l:'[FORBES]',c:'cm'},
+  'the information':{l:'[THE INFORMATION]',c:'cm'},'utoday':{l:'[U.TODAY]',c:'cm'},
   'cryptonews':{l:'[CRYPTONEWS]',c:'cm'},
   'manual':{l:'[MANUAL]',c:'cm'},
   /* Wire — press release services */
@@ -2122,7 +2223,7 @@ setInterval(()=>{
 
 // ══ HYPERLIQUID ORDERBOOK ══
 (function(){
-  const LEVELS = 16;
+  let LEVELS = 16; window.renderBook = renderBook;
   let hlWs=null, reconn=null;
   let book={asks:[],bids:[]};
   let curAsset='BTC';
@@ -2133,8 +2234,8 @@ setInterval(()=>{
   const $=(id)=>document.getElementById(id);
 
   function renderBook(){
-    const asks=book.asks.slice(0,LEVELS);
-    const bids=book.bids.slice(0,LEVELS);
+    const asks=book.asks.slice(0,OB_LEVELS||LEVELS);
+    const bids=book.bids.slice(0,OB_LEVELS||LEVELS);
     let cumA=0,cumB=0,totA=[],totB=[];
     asks.forEach(([p,s])=>{cumA+=Number(s);totA.push(cumA);});
     bids.forEach(([p,s])=>{cumB+=Number(s);totB.push(cumB);});
@@ -2290,6 +2391,18 @@ document.addEventListener('click', function(e){
     }
   }catch(_){}
 })();
+
+
+// ══ ORDERBOOK EXPAND MODE ══
+let obExpanded = false;
+function toggleObExpand(){
+  obExpanded = !obExpanded;
+  document.body.classList.toggle('ob-expanded', obExpanded);
+  // Re-render with more levels
+  OB_LEVELS = obExpanded ? 28 : 16;
+  renderBook();
+}
+let OB_LEVELS = 16;
 
 </script>
 

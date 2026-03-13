@@ -27,10 +27,11 @@ FEEDS = [
     {"url": "https://theblock.co/rss.xml",                         "source": "The Block",        "cat": "cm"},
     {"url": "https://blockworks.co/feed",                          "source": "Blockworks",       "cat": "cm"},
     {"url": "https://thedefiant.io/feed",                          "source": "The Defiant",      "cat": "cm"},
-    {"url": "https://beincrypto.com/feed/",                        "source": "BeInCrypto",       "cat": "cm"},
     {"url": "https://bitcoinist.com/feed/",                        "source": "Bitcoinist",       "cat": "cm"},
     {"url": "https://newsbtc.com/feed/",                           "source": "NewsBTC",          "cat": "cm"},
     {"url": "https://u.today/rss",                                 "source": "U.Today",          "cat": "cm"},
+    {"url": "https://www.forbes.com/crypto-blockchain/feed/",       "source": "Forbes",           "cat": "cm"},
+    {"url": "https://www.theinformation.com/feed",                  "source": "The Information",  "cat": "cm"},
     # WIRE — prefiltered feeds don't need keyword check
     {"url": "https://chainwire.org/feed/",                                         "source": "Chainwire",     "cat": "cr", "prefiltered": True},
     {"url": "https://www.globenewswire.com/RssFeed/subjectcode/BC-Blockchain",     "source": "GlobeNewswire", "cat": "cr", "prefiltered": True},
