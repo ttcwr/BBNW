@@ -1327,7 +1327,7 @@ function render(){
     }
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
     /* 48h cutoff */
-    if(it._ts){const age=(Date.now()-new Date(it._ts))/3600000;if(age>48)return false;}
+    if(it._ts){const age=(Date.now()-new Date(it._ts))/3600000;if(age>96)return false;}
     if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase())return false;
     if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase()) return false;
     return true;
@@ -1767,8 +1767,28 @@ setInterval(()=>{
       setConn('live');
       // Subscribe to L2 orderbook for BTC
       hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'l2Book',coin:'BTC'}}));
-      // Subscribe to BTC meta for funding/OI
+      // Subscribe to asset context for funding/OI (correct HL API format)
       hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'activeAssetCtx',coin:'BTC'}}));
+      // Also fetch meta via REST for immediate funding/OI display
+      fetch('https://api.hyperliquid.xyz/info',{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({type:'metaAndAssetCtxs'})
+      }).then(r=>r.json()).then(d=>{
+        if(!d||!d[1]) return;
+        const btcIdx=d[0].universe.findIndex(u=>u.name==='BTC');
+        if(btcIdx<0) return;
+        const ctx=d[1][btcIdx];
+        const funding=(Number(ctx.funding)*100).toFixed(4);
+        const fe=document.getElementById('ob-funding');
+        if(fe){ fe.textContent=(funding>=0?'+':'')+funding+'%'; fe.style.color=Number(funding)>=0?'#ef4444':'#22c55e'; }
+        const oiUsd=Number(ctx.openInterest)*Number(ctx.markPx);
+        const ve=document.getElementById('ob-vol');
+        const oe=document.getElementById('ob-oi');
+        const me=document.getElementById('ob-mark');
+        if(oe) oe.textContent='$'+fmtM(oiUsd);
+        if(me) me.textContent=fmt$(Number(ctx.markPx));
+        if(ve && ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
+      }).catch(e=>console.warn('HL REST err',e));
     };
 
     hlWs.onmessage=(e)=>{
@@ -1789,27 +1809,19 @@ setInterval(()=>{
           }
         }
 
-        // Asset context: funding, OI, volume
+        // Asset context: funding, OI - HL sends ctx directly in data
         if(d.channel==='activeAssetCtx'){
-          const ctx=d.data.ctx;
+          const ctx=d.data&&d.data.ctx ? d.data.ctx : d.data;
           if(!ctx) return;
-          const funding=Number(ctx.funding)*100;
-          const fundingEl=document.getElementById('ob-funding');
-          if(fundingEl){
-            fundingEl.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';
-            fundingEl.style.color=funding>=0?'#ef4444':'#22c55e';
+          const funding=Number(ctx.funding||0)*100;
+          const fe=document.getElementById('ob-funding');
+          if(fe){ fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%'; fe.style.color=funding>=0?'#ef4444':'#22c55e'; }
+          if(ctx.openInterest&&ctx.markPx){
+            const oi=document.getElementById('ob-oi');
+            if(oi) oi.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
           }
-          if(ctx.openInterest){
-            const oiUsd=Number(ctx.openInterest)*Number(ctx.markPx||0);
-            document.getElementById('ob-oi').textContent='$'+fmtM(oiUsd);
-          }
-          if(ctx.dayNtlVlm){
-            document.getElementById('ob-vol').textContent='$'+fmtM(Number(ctx.dayNtlVlm));
-          }
-          if(ctx.markPx){
-            markPrice=Number(ctx.markPx);
-            document.getElementById('ob-mark').textContent=fmt$(markPrice);
-          }
+          if(ctx.dayNtlVlm){ const v=document.getElementById('ob-vol'); if(v) v.textContent='$'+fmtM(Number(ctx.dayNtlVlm)); }
+          if(ctx.markPx){ markPrice=Number(ctx.markPx); const m=document.getElementById('ob-mark'); if(m) m.textContent=fmt$(markPrice); }
         }
       }catch(err){ console.warn('HL parse err',err); }
     };
