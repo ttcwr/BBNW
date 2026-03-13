@@ -1147,7 +1147,7 @@ body{animation:flicker 8s ease infinite;}
 /* Rotate expand icon */
 .ob-expanded .ob-expand-btn svg{transform:rotate(45deg);}
 
-.ob-stat-v{font-family:var(--mono);font-size:13px;color:var(--t0);font-variant-numeric:tabular-nums;letter-spacing:.01em;font-weight:600;}
+.ob-stat-v{font-family:var(--mono);font-size:14px;color:var(--t0);font-variant-numeric:tabular-nums;letter-spacing:-.01em;font-weight:600;}
 
 .ob-cols-header{
   display:grid;grid-template-columns:1fr 1fr 1fr;
@@ -1531,7 +1531,6 @@ body{animation:flicker 8s ease infinite;}
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoin Magazine')"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Blockworks')"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'The Defiant')"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm" style="opacity:.35;pointer-events:none;text-decoration:line-through;" onclick="toggleSrcRow(this,'BeInCrypto')"><div class="src-dot cm"></div><span class="src-name" style="text-decoration:line-through">BeInCrypto</span><span class="src-badge bl">OFF</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoinist')"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'NewsBTC')"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'U.Today')"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
@@ -1596,8 +1595,12 @@ body{animation:flicker 8s ease infinite;}
           </button>
         </div>
         <div class="ob-brand-inline">
-          <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6C6 6 10 10 10 16C10 22 6 26 6 26" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/><path d="M26 6C26 6 22 10 22 16C22 22 26 26 26 26" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/><path d="M10 16H22" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/></svg>
-          <span class="ob-brand-text">LIVE BY HYPERLIQUID</span>
+          <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 20 C15 20, 35 20, 35 50 C35 80, 15 80, 15 80" stroke="#00DCFA" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M85 20 C85 20, 65 20, 65 50 C65 80, 85 80, 85 80" stroke="#00DCFA" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M35 50 L65 50" stroke="#00DCFA" stroke-width="12" stroke-linecap="round"/>
+          </svg>
+          <span class="ob-brand-text">LIVE DATA FROM HYPERLIQUID</span>
         </div>
         <button class="ob-expand-btn" id="ob-expand-btn" onclick="toggleObExpand()" title="Expand orderbook">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
@@ -1661,7 +1664,6 @@ const SM={
   'blockworks':{l:'[BLOCKWORKS]',c:'cm'},
   'the defiant':{l:'[THE DEFIANT]',c:'cm'},'thedefiant':{l:'[THE DEFIANT]',c:'cm'},
   'cryptoslate':{l:'[CRYPTOSLATE]',c:'cm'},
-  'beincrypto':{l:'[BEINCRYPTO]',c:'cm'},
   'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
   'newsbtc':{l:'[NEWSBTC]',c:'cm'},
   'u.today':{l:'[U.TODAY]',c:'cm'},
@@ -2242,192 +2244,169 @@ setInterval(()=>{
 
 
 
-// ══ HYPERLIQUID ORDERBOOK ══
-(function(){
-  let LEVELS = 16; window.renderBook = renderBook; window.OB_BOOK = book;
-  let hlWs=null, reconn=null;
-  let book={asks:[],bids:[]};
-  let curAsset='BTC';
 
-  const fmt$=(n,dec=1)=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
-  const fmtSz=(n)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
-  const fmtM=(n)=>{n=Number(n);if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return n.toFixed(0);};
-  const $=(id)=>document.getElementById(id);
+// ══════════════════════════════════════════
+//  HYPERLIQUID ORDERBOOK — clean rewrite
+// ══════════════════════════════════════════
+(function(){
+  let hlWs = null, reconn = null;
+  let book  = {asks:[], bids:[]};
+  let asset = 'BTC';
+  let levels = 16;
+
+  const $ = id => document.getElementById(id);
+  const fmt$ = (n,d=1) => '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const fmtSz = n => Number(n).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+  const fmtM  = n => { n=Number(n); if(n>=1e9)return(n/1e9).toFixed(2)+'B'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; return n.toFixed(0); };
+
+  function setConn(s){
+    const el=$('ob-conn'); if(!el) return;
+    if(s==='live'){el.textContent='● LIVE';el.className='ob-conn live';}
+    else if(s==='err'){el.textContent='● DISCONNECTED';el.className='ob-conn err';}
+    else{el.textContent='● CONNECTING';el.className='ob-conn';}
+  }
 
   function renderBook(){
-    const asks=book.asks.slice(0,OB_LEVELS||LEVELS);
-    const bids=book.bids.slice(0,OB_LEVELS||LEVELS);
-    let cumA=0,cumB=0,totA=[],totB=[];
-    asks.forEach(([p,s])=>{cumA+=Number(s);totA.push(cumA);});
-    bids.forEach(([p,s])=>{cumB+=Number(s);totB.push(cumB);});
+    const expanded = document.body.classList.contains('ob-expanded');
+    const n = expanded ? 28 : levels;
+    const asks = book.asks.slice(0, n);
+    const bids = book.bids.slice(0, n);
+
+    let cumA=0, totA=[], cumB=0, totB=[];
+    asks.forEach(([,s])=>{ cumA+=Number(s); totA.push(cumA); });
+    bids.forEach(([,s])=>{ cumB+=Number(s); totB.push(cumB); });
     const maxA=cumA||1, maxB=cumB||1;
 
-    // Asks reversed: biggest at top, best ask at bottom
-    const askRev=[...asks].reverse();
-    const totARev=[...totA].reverse();
-    $('ob-asks').innerHTML=askRev.map(([p,s],i)=>{
+    // Asks: reverse so largest cumulative at top, best ask at bottom
+    const asksRev=[...asks].reverse(), totARev=[...totA].reverse();
+    $('ob-asks').innerHTML = asksRev.map(([p,s],i)=>{
       const pct=(totARev[i]/maxA*100).toFixed(1);
-      return `<div class="ob-row ask"><div class="ob-bar" style="width:${pct}%"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totARev[i])}</span></div>`;
+      return `<div class="ob-row ask"><div class="ob-bar" style="width:${pct}%"></div>`+
+             `<span class="ob-price">${fmt$(p)}</span>`+
+             `<span class="ob-size">${fmtSz(s)}</span>`+
+             `<span class="ob-total">${fmtSz(totARev[i])}</span></div>`;
     }).join('');
 
-    const expanded = document.body.classList.contains('ob-expanded');
-    // In expanded mode: bids bar fills from LEFT (reversed for visual)
-    $('ob-bids').innerHTML=bids.map(([p,s],i)=>{
+    // Bids: best bid at top (row 0), cumulative grows down
+    $('ob-bids').innerHTML = bids.map(([p,s],i)=>{
       const pct=(totB[i]/maxB*100).toFixed(1);
-      const barStyle = expanded
-        ? `left:0;right:auto;width:${pct}%`
-        : `right:0;left:auto;width:${pct}%`;
-      return `<div class="ob-row bid"><div class="ob-bar" style="${barStyle}"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totB[i])}</span></div>`;
+      const barStyle = expanded ? `left:0;right:auto;width:${pct}%` : `width:${pct}%`;
+      return `<div class="ob-row bid"><div class="ob-bar" style="${barStyle}"></div>`+
+             `<span class="ob-price">${fmt$(p)}</span>`+
+             `<span class="ob-size">${fmtSz(s)}</span>`+
+             `<span class="ob-total">${fmtSz(totB[i])}</span></div>`;
     }).join('');
 
-    if(asks.length&&bids.length){
-      const bestAsk=Number(asks[0][0]),bestBid=Number(bids[0][0]);
+    // Spread
+    if(asks.length && bids.length){
+      const bestAsk=Number(asks[0][0]), bestBid=Number(bids[0][0]);
       const sp=bestAsk-bestBid;
-      const se=$('ob-spread'),spe=$('ob-spread-pct');
+      const se=$('ob-spread'), spe=$('ob-spread-pct');
       if(se) se.textContent=fmt$(sp,2);
       if(spe) spe.textContent=(sp/bestAsk*100).toFixed(3)+'%';
     }
   }
 
-  function setConn(s){
-    const el=$('ob-conn'); if(!el) return;
-    if(s==='live'){el.textContent='● LIVE';el.className='ob-conn live';}
-    else if(s==='err'){el.textContent='● OFF';el.className='ob-conn err';}
-    else{el.textContent='● …';el.className='ob-conn';}
-  }
-
   function loadREST(coin){
     fetch('https://api.hyperliquid.xyz/info',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({type:'metaAndAssetCtxs'})
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({type:'metaAndAssetCtxs'})
     }).then(r=>r.json()).then(d=>{
       if(!d||!d[1]) return;
-      const idx=d[0].universe.findIndex(u=>u.name===coin);
+      const idx = d[0].universe.findIndex(u=>u.name===coin);
       if(idx<0) return;
-      const ctx=d[1][idx];
-      const funding=(Number(ctx.funding||0)*100);
+      const ctx = d[1][idx];
+      const funding = Number(ctx.funding||0)*100;
       const fe=$('ob-funding');
-      if(fe){fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';fe.style.color=funding>=0?'#f87171':'#4ade80';}
-      const oe=$('ob-oi'); if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
-      const me=$('ob-mark'); if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
-      const ve=$('ob-vol'); if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
+      if(fe){ fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%'; fe.style.color=funding>=0?'#f87171':'#4ade80'; }
+      const me=$('ob-mark');     if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
+      const oe=$('ob-oi');       if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
+      const ve=$('ob-vol');      if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
     }).catch(()=>{});
   }
 
   function connect(coin){
-    book={asks:[],bids:[]};
-    if(hlWs){try{hlWs.close();}catch(_){}}
+    asset = coin;
+    book  = {asks:[], bids:[]};
+    if(hlWs){ try{hlWs.close();}catch(_){} hlWs=null; }
+    clearTimeout(reconn);
     setConn('connecting');
     loadREST(coin);
-    hlWs=new WebSocket('wss://api.hyperliquid.xyz/ws');
-    hlWs.onopen=()=>{
+    try{
+      hlWs = new WebSocket('wss://api.hyperliquid.xyz/ws');
+    }catch(e){ console.warn('HL WS error',e); setConn('err'); return; }
+
+    hlWs.onopen = () => {
+      console.log('[HL] WS open, subscribing to',coin);
       setConn('live');
       hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'l2Book',coin}}));
       hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'activeAssetCtx',coin}}));
     };
-    hlWs.onmessage=(e)=>{
+
+    hlWs.onmessage = e => {
       try{
-        const d=JSON.parse(e.data);
-        if(!d.data) return;
+        const d = JSON.parse(e.data);
+        if(!d||!d.data) return;
         if(d.channel==='l2Book'){
-          const lv=d.data.levels;
-          book.asks=lv[0].map(l=>[l.px,l.sz]);
-          book.bids=lv[1].map(l=>[l.px,l.sz]);
+          const lv = d.data.levels;
+          if(!lv||!lv[0]) return;
+          book.asks = lv[0].map(l=>[l.px, l.sz]);
+          book.bids = lv[1].map(l=>[l.px, l.sz]);
           renderBook();
+          // Update mark from midpoint
           if(book.asks.length&&book.bids.length){
             const mid=(Number(book.asks[0][0])+Number(book.bids[0][0]))/2;
             const me=$('ob-mark'); if(me) me.textContent=fmt$(mid);
           }
         }
         if(d.channel==='activeAssetCtx'){
-          const ctx=d.data&&d.data.ctx?d.data.ctx:d.data;
+          const ctx = d.data&&d.data.ctx ? d.data.ctx : d.data;
           if(!ctx) return;
-          const funding=Number(ctx.funding||0)*100;
+          const funding = Number(ctx.funding||0)*100;
           const fe=$('ob-funding');
-          if(fe){fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';fe.style.color=funding>=0?'#f87171':'#4ade80';}
-          const oe=$('ob-oi'); if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
-          const ve=$('ob-vol'); if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
-          const me=$('ob-mark'); if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
+          if(fe){ fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%'; fe.style.color=funding>=0?'#f87171':'#4ade80'; }
+          const me=$('ob-mark');  if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
+          const oe=$('ob-oi');    if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
+          const ve=$('ob-vol');   if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
         }
-      }catch(_){}
+      }catch(err){ console.warn('[HL] parse error',err); }
     };
-    hlWs.onerror=()=>setConn('err');
-    hlWs.onclose=()=>{setConn('err');clearTimeout(reconn);reconn=setTimeout(()=>connect(curAsset),3000);};
+
+    hlWs.onerror = () => { console.warn('[HL] WS error'); setConn('err'); };
+    hlWs.onclose = () => {
+      console.warn('[HL] WS closed, reconnecting in 3s');
+      setConn('err');
+      clearTimeout(reconn);
+      reconn = setTimeout(()=>connect(asset), 3000);
+    };
   }
 
-  window.switchAsset=function(coin){
-    curAsset=coin;
-    document.querySelectorAll('.ob-asset-btn').forEach(b=>b.classList.remove('active'));
-    const btn=document.getElementById('ob-btn-'+coin);
-    if(btn) btn.classList.add('active');
-    // Clear stats
-    ['ob-mark','ob-funding','ob-oi','ob-vol','ob-spread','ob-spread-pct'].forEach(id=>{const e=$(id);if(e)e.textContent='—';});
-    connect(coin);
-  };
+  // Expose for expand toggle
+  window._hlConnect  = connect;
+  window._hlGetAsset = () => asset;
+  window._hlRender   = renderBook;
 
-  setTimeout(()=>connect('BTC'), 400);
+  // Start
+  setTimeout(()=>connect('BTC'), 500);
 })();
 
-
-// ══ THEME SWITCHER ══
-function setTheme(t, el){
-  const root = document.documentElement;
-  if(t==='retro') root.removeAttribute('data-theme');
-  else root.setAttribute('data-theme', t==='mono'?'mono':'trading');
-  
-  const labels = {retro:'RETRO', mono:'MONO', trading:'TRADING DESK'};
-  const lbl = document.getElementById('theme-label');
-  if(lbl) lbl.textContent = labels[t];
-  
-  document.querySelectorAll('.theme-option').forEach(o=>o.classList.remove('active'));
-  if(el) el.classList.add('active');
-  
-  closeThemeMenu();
-  try{ localStorage.setItem('bbnw-theme', t); }catch(_){}
-}
-
-function toggleThemeMenu(e){
-  e.stopPropagation();
-  const menu = document.getElementById('themeMenu');
-  const arrow = document.getElementById('theme-arrow');
-  if(!menu) return;
-  const open = menu.classList.toggle('open');
-  if(arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
-}
-
-function closeThemeMenu(){
-  const menu = document.getElementById('themeMenu');
-  const arrow = document.getElementById('theme-arrow');
-  if(menu) menu.classList.remove('open');
-  if(arrow) arrow.style.transform = '';
-}
-
-document.addEventListener('click', function(e){
-  if(!document.getElementById('themeSwitcher')?.contains(e.target)) closeThemeMenu();
-});
-
-// Restore saved theme
-(function(){
-  try{
-    const saved = localStorage.getItem('bbnw-theme');
-    if(saved && saved!=='retro'){
-      const opts=[...document.querySelectorAll('.theme-option')];
-      const opt=opts.find(o=>o.getAttribute('onclick')&&o.getAttribute('onclick').includes(saved))||null;
-      setTheme(saved, opt);
-    }
-  }catch(_){}
-})();
-
-
-// ══ ORDERBOOK EXPAND MODE ══
+// ══ ORDERBOOK EXPAND ══
 let obExpanded = false;
 function toggleObExpand(){
   obExpanded = !obExpanded;
   document.body.classList.toggle('ob-expanded', obExpanded);
-  // Re-render with more levels
-  OB_LEVELS = obExpanded ? 28 : 16;
-  renderBook();
+  if(window._hlRender) window._hlRender();
 }
+
+window.switchAsset = function(coin){
+  document.querySelectorAll('.ob-asset-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('ob-btn-'+coin);
+  if(btn) btn.classList.add('active');
+  ['ob-mark','ob-funding','ob-oi','ob-vol','ob-spread','ob-spread-pct'].forEach(id=>{
+    const e=document.getElementById(id); if(e){e.textContent='—'; e.style.color='';}
+  });
+  if(window._hlConnect) window._hlConnect(coin);
+};
 let OB_LEVELS = 16;
 
 </script>
