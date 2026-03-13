@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BB NEWSWIRE // MATRIX TERMINAL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
@@ -60,6 +60,154 @@
   --sans: 'Inter', system-ui, sans-serif;
   --vt:   'JetBrains Mono', monospace;  /* was VT323 — now crisp */
 }
+
+/* ══ THEME: MONO (black & white editorial) ══ */
+[data-theme="mono"]{
+  --bg:    #f5f5f0;
+  --s0:    #ffffff;
+  --s1:    #f8f8f5;
+  --s2:    #f0f0eb;
+  --s3:    #e8e8e2;
+  --s4:    #e0e0d8;
+  --s5:    #d8d8d0;
+  --b0: rgba(0,0,0,.04);
+  --b1: rgba(0,0,0,.08);
+  --b2: rgba(0,0,0,.12);
+  --b3: rgba(0,0,0,.22);
+  --b4: rgba(0,0,0,.38);
+  --b5: rgba(0,0,0,.60);
+  --t0: #050505;
+  --t1: #1a1a1a;
+  --t2: #3a3a3a;
+  --t3: #6a6a6a;
+  --t4: #9a9a9a;
+  --t5: #c8c8c8;
+  --green:  #050505;
+  --y:      #050505;
+  --cx: #050505; --cw: #050505; --cc: #050505;
+  --cm: #050505; --cg: #050505; --cr: #050505;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+/* ══ THEME: TRADING DESK (Bloomberg) ══ */
+[data-theme="trading"]{
+  --bg:    #0a0800;
+  --s0:    #0d0b00;
+  --s1:    #100e00;
+  --s2:    #141100;
+  --s3:    #181400;
+  --s4:    #1c1800;
+  --s5:    #201c00;
+  --b0: rgba(255,160,0,.04);
+  --b1: rgba(255,160,0,.08);
+  --b2: rgba(255,160,0,.14);
+  --b3: rgba(255,160,0,.24);
+  --b4: rgba(255,160,0,.40);
+  --b5: rgba(255,160,0,.65);
+  --t0: #ffb800;
+  --t1: #e0a000;
+  --t2: #b07800;
+  --t3: #705000;
+  --t4: #403000;
+  --t5: #201800;
+  --green:  #00e676;
+  --y:      #ffb800;
+  --cx: #ff6b00; --cw: #ff9500; --cc: #00ff41;
+  --cm: #ffb800; --cg: #ff4444; --cr: #ff6b00;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+/* ══ THEME-SPECIFIC OVERRIDES ══ */
+
+/* MONO overrides */
+[data-theme="mono"] .topbar,
+[data-theme="mono"] .statstrip,
+[data-theme="mono"] .catbar,
+[data-theme="mono"] .sidebar,
+[data-theme="mono"] .right{background:var(--s0);}
+[data-theme="mono"] .layout{background:var(--bg);}
+[data-theme="mono"] .ncard{background:var(--s0);border-color:var(--b2);}
+[data-theme="mono"] .ncard:hover{border-color:var(--b4);}
+[data-theme="mono"] .ncard.selected{border-color:#050505;background:var(--s1);}
+[data-theme="mono"] .nc-hl{color:#050505;font-family:'IBM Plex Sans',sans-serif;font-weight:600;}
+[data-theme="mono"] .brk-tag{background:#050505;color:#f5f5f0;border:none;}
+[data-theme="mono"] .nc-time{color:#6a6a6a;}
+[data-theme="mono"] .cat.on{background:#050505;color:#f5f5f0;border-color:#050505;}
+[data-theme="mono"] .cat.on .cpip{background:#f5f5f0;}
+[data-theme="mono"] .tab.on::after{background:#050505;}
+[data-theme="mono"] .tab.on{color:#050505;}
+[data-theme="mono"] .logo-name em{color:#050505;font-style:normal;font-weight:800;}
+[data-theme="mono"] .logo-badge{color:#9a9a9a;border-color:var(--b3);}
+[data-theme="mono"] .src-row.active-filter{background:#050505;color:#f5f5f0;}
+[data-theme="mono"] .src-dot{background:#050505;}
+[data-theme="mono"] body{background:var(--bg);}
+[data-theme="mono"] .nc-src-badge{background:transparent;color:#050505;border:1px solid #050505;}
+[data-theme="mono"] .score-bar-fill{background:#050505;}
+[data-theme="mono"] .ticker-tag{background:transparent;border:1px solid var(--b3);color:#3a3a3a;}
+[data-theme="mono"] .feed-wrap{background:var(--bg);}
+
+/* TRADING DESK overrides */
+[data-theme="trading"] .topbar{border-bottom-color:var(--b3);}
+[data-theme="trading"] .logo-name em{color:var(--t0);}
+[data-theme="trading"] .logo-badge{color:var(--t0);border-color:var(--b3);}
+[data-theme="trading"] .brk-tag{background:#ff4444;color:#0a0800;border:none;}
+[data-theme="trading"] .nc-hl{color:var(--t0);font-family:'IBM Plex Mono',monospace;font-size:12px;}
+[data-theme="trading"] .ncard{border-color:var(--b2);}
+[data-theme="trading"] .ncard.selected{border-color:var(--t0);background:rgba(255,184,0,.04);}
+[data-theme="trading"] .ncard:hover{border-color:var(--b4);}
+[data-theme="trading"] .cat.on{background:var(--b2);border-color:var(--b4);color:var(--t0);}
+[data-theme="trading"] .cat.on .cpip{background:var(--t0);}
+[data-theme="trading"] .tab.on::after{background:var(--t0);}
+[data-theme="trading"] .tab.on{color:var(--t0);}
+[data-theme="trading"] .score-pct{color:var(--t0);}
+[data-theme="trading"] .ticker-tag{border-color:var(--b3);color:var(--t1);}
+[data-theme="trading"] .src-dot{background:var(--t0);}
+[data-theme="trading"] .nc-time{color:#ff6b00;}
+[data-theme="trading"] .score-bar-fill{background:var(--t0);}
+[data-theme="trading"] .ob-row.ask .ob-price{color:#ff4444;}
+[data-theme="trading"] .ob-row.bid .ob-price{color:#00e676;}
+
+/* THEME SWITCHER DROPDOWN */
+.theme-switcher{
+  position:relative;
+  display:flex;align-items:center;
+  padding:0 16px;border-left:1px solid var(--b2);
+  cursor:pointer;user-select:none;
+}
+.theme-btn{
+  display:flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  color:var(--t2);letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:none;cursor:pointer;padding:0;
+}
+.theme-btn:hover{color:var(--t0);}
+.theme-arrow{font-size:8px;color:var(--t3);transition:transform .15s;}
+.theme-menu{
+  position:absolute;top:calc(100% + 4px);right:0;
+  background:var(--s1);border:1px solid var(--b3);
+  border-radius:3px;min-width:160px;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  z-index:1000;display:none;overflow:hidden;
+}
+.theme-menu.open{display:block;}
+.theme-option{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 14px;cursor:pointer;
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  color:var(--t2);transition:all .1s;
+  border-bottom:1px solid var(--b1);
+}
+.theme-option:last-child{border-bottom:none;}
+.theme-option:hover{background:var(--b1);color:var(--t0);}
+.theme-option.active{color:var(--t0);}
+.theme-option.active::after{content:'✓';margin-left:auto;color:var(--green);}
+.theme-swatch{
+  width:10px;height:10px;border-radius:2px;flex-shrink:0;
+  border:1px solid var(--b3);
+}
+
 
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t2);}
 body{font-family:var(--mono);font-size:12px;line-height:1.5;-webkit-font-smoothing:antialiased;}
@@ -880,6 +1028,23 @@ body{animation:flicker 8s ease infinite;}
     <div class="live-w">
       <div class="lpip"></div>
       <span class="ltxt" id="ltxt">DEMO</span>
+    </div>
+    <div class="theme-switcher" id="themeSwitcher">
+      <button class="theme-btn" onclick="toggleThemeMenu(event)">
+        <span id="theme-label">RETRO</span>
+        <span class="theme-arrow" id="theme-arrow">▾</span>
+      </button>
+      <div class="theme-menu" id="themeMenu">
+        <div class="theme-option active" onclick="setTheme('retro',this)">
+          <span class="theme-swatch" style="background:#080810;"></span>RETRO
+        </div>
+        <div class="theme-option" onclick="setTheme('mono',this)">
+          <span class="theme-swatch" style="background:#f5f5f0;border-color:#ccc;"></span>MONO
+        </div>
+        <div class="theme-option" onclick="setTheme('trading',this)">
+          <span class="theme-swatch" style="background:#0a0800;border-color:#ffb800;"></span>TRADING DESK
+        </div>
+      </div>
     </div>
     <div class="clk-w">
       <div class="clk-t" id="clkt">--:--:--</div>
@@ -1783,6 +1948,56 @@ setInterval(()=>{
   };
 
   setTimeout(()=>connect('BTC'), 400);
+})();
+
+
+// ══ THEME SWITCHER ══
+function setTheme(t, el){
+  const root = document.documentElement;
+  if(t==='retro') root.removeAttribute('data-theme');
+  else root.setAttribute('data-theme', t==='mono'?'mono':'trading');
+  
+  const labels = {retro:'RETRO', mono:'MONO', trading:'TRADING DESK'};
+  const lbl = document.getElementById('theme-label');
+  if(lbl) lbl.textContent = labels[t];
+  
+  document.querySelectorAll('.theme-option').forEach(o=>o.classList.remove('active'));
+  if(el) el.classList.add('active');
+  
+  closeThemeMenu();
+  try{ localStorage.setItem('bbnw-theme', t); }catch(_){}
+}
+
+function toggleThemeMenu(e){
+  e.stopPropagation();
+  const menu = document.getElementById('themeMenu');
+  const arrow = document.getElementById('theme-arrow');
+  if(!menu) return;
+  const open = menu.classList.toggle('open');
+  if(arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function closeThemeMenu(){
+  const menu = document.getElementById('themeMenu');
+  const arrow = document.getElementById('theme-arrow');
+  if(menu) menu.classList.remove('open');
+  if(arrow) arrow.style.transform = '';
+}
+
+document.addEventListener('click', function(e){
+  if(!document.getElementById('themeSwitcher')?.contains(e.target)) closeThemeMenu();
+});
+
+// Restore saved theme
+(function(){
+  try{
+    const saved = localStorage.getItem('bbnw-theme');
+    if(saved && saved!=='retro'){
+      const opts=[...document.querySelectorAll('.theme-option')];
+      const opt=opts.find(o=>o.getAttribute('onclick')&&o.getAttribute('onclick').includes(saved))||null;
+      setTheme(saved, opt);
+    }
+  }catch(_){}
 })();
 
 </script>
