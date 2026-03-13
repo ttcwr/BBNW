@@ -583,76 +583,59 @@ body{animation:flicker 8s ease infinite;}
 }
 
 /* ── ORDERBOOK ── */
-.ob-header{
-  padding:10px 14px 8px;
-  border-bottom:1px solid var(--b2);
-  flex-shrink:0;
+.ob-header{padding:10px 12px 8px;border-bottom:1px solid var(--b2);flex-shrink:0;}
+.ob-selector{display:flex;gap:4px;margin-bottom:8px;}
+.ob-asset-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:3px;
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;
+  border:1px solid var(--b2);background:transparent;color:var(--t3);cursor:pointer;
+  transition:all .12s;
 }
-.ob-title{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
-.ob-sym{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--t0);letter-spacing:.08em;}
-.ob-exchange{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.15em;}
-.ob-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;}
+.ob-asset-btn:hover{border-color:var(--b3);color:var(--t1);}
+.ob-asset-btn.active{border-color:var(--t2);color:var(--t0);background:rgba(255,255,255,.04);}
+.ob-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px;}
 .ob-stat{display:flex;flex-direction:column;gap:1px;}
-.ob-stat-l{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;}
-.ob-stat-v{font-family:var(--mono);font-size:11px;color:var(--t1);font-variant-numeric:tabular-nums;}
+.ob-stat-l{font-family:var(--mono);font-size:6.5px;color:var(--t4);letter-spacing:.18em;text-transform:uppercase;}
+.ob-stat-v{font-family:var(--mono);font-size:11px;color:var(--t0);font-variant-numeric:tabular-nums;letter-spacing:.02em;}
 
 .ob-cols-header{
   display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:4px 14px;
-  border-bottom:1px solid var(--b1);
-  flex-shrink:0;
+  padding:3px 12px;border-bottom:1px solid var(--b1);flex-shrink:0;
 }
-.ob-ch{font-family:var(--mono);font-size:7.5px;color:var(--t4);letter-spacing:.12em;}
-.ob-ch.size,.ob-ch.total{text-align:right;}
+.ob-ch{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.14em;}
+.ob-ch.right{text-align:right;}
 
-.ob-book{
-  flex:1;display:flex;flex-direction:column;overflow:hidden;
-  position:relative;
-}
-.ob-asks{
-  flex:1;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:flex-end;
-}
-.ob-bids{
-  flex:1;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:flex-start;
-}
+.ob-book{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.ob-asks{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;min-height:0;}
+.ob-bids{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;}
 
 .ob-row{
   display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:1.5px 14px;
-  position:relative;
-  cursor:default;
-  transition:background .05s;
+  padding:2px 12px;position:relative;cursor:default;
+  transition:opacity .05s;
 }
-.ob-row:hover{background:rgba(255,255,255,.03);}
-.ob-row .ob-bar{
-  position:absolute;top:0;bottom:0;right:0;
-  opacity:.15;pointer-events:none;
-}
-.ob-row.ask .ob-bar{background:#ef4444;}
-.ob-row.bid .ob-bar{background:#22c55e;}
-.ob-row .ob-price{font-family:var(--mono);font-size:10.5px;font-variant-numeric:tabular-nums;z-index:1;}
-.ob-row.ask .ob-price{color:#ef4444;}
-.ob-row.bid .ob-price{color:#22c55e;}
-.ob-row .ob-size,.ob-row .ob-total{
-  font-family:var(--mono);font-size:10px;color:var(--t2);
-  text-align:right;font-variant-numeric:tabular-nums;z-index:1;
-}
+.ob-row:hover{opacity:.8;}
+.ob-bar{position:absolute;top:0;bottom:0;right:0;pointer-events:none;transition:width .1s;}
+.ob-row.ask .ob-bar{background:rgba(239,68,68,.18);}
+.ob-row.bid .ob-bar{background:rgba(34,197,94,.15);}
+.ob-price{font-family:var(--mono);font-size:10px;font-variant-numeric:tabular-nums;font-weight:500;position:relative;z-index:1;}
+.ob-row.ask .ob-price{color:#f87171;}
+.ob-row.bid .ob-price{color:#4ade80;}
+.ob-size,.ob-total{font-family:var(--mono);font-size:10px;color:var(--t2);text-align:right;font-variant-numeric:tabular-nums;position:relative;z-index:1;}
 
 .ob-spread-row{
   display:flex;align-items:center;gap:6px;
-  padding:4px 14px;
+  padding:3px 12px;flex-shrink:0;
   border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);
-  background:var(--s1);flex-shrink:0;
+  background:rgba(255,255,255,.02);
 }
-.ob-spread-label{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;}
+.ob-spread-label{font-family:var(--mono);font-size:6.5px;color:var(--t4);letter-spacing:.18em;}
 .ob-spread-val{font-family:var(--mono);font-size:10px;color:var(--t1);font-variant-numeric:tabular-nums;}
 .ob-spread-pct{font-family:var(--mono);font-size:8px;color:var(--t4);}
-
-.ob-footer{
-  padding:5px 14px;border-top:1px solid var(--b2);flex-shrink:0;
-}
+.ob-conn{font-family:var(--mono);font-size:7px;letter-spacing:.1em;color:var(--t4);margin-left:auto;}
+.ob-conn.live{color:#4ade80;}
+.ob-conn.err{color:#f87171;}
 .ob-conn{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--t4);}
 .ob-conn.live{color:#22c55e;}
 .ob-conn.err{color:#ef4444;}
@@ -982,7 +965,6 @@ body{animation:flicker 8s ease infinite;}
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoin Magazine')"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Blockworks')"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'The Defiant')"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row cm" onclick="toggleSrcRow(this,'CryptoSlate')"><div class="src-dot cm"></div><span class="src-name">CryptoSlate</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'BeInCrypto')"><div class="src-dot cm"></div><span class="src-name">BeInCrypto</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoinist')"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cm" onclick="toggleSrcRow(this,'NewsBTC')"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
@@ -1032,50 +1014,46 @@ body{animation:flicker 8s ease infinite;}
 
   <!-- RIGHT PANEL — ORDERBOOK -->
   <div class="right">
+
+    <!-- Asset selector + stats -->
     <div class="ob-header">
-      <div class="ob-title">
-        <span class="ob-sym">BTC</span>
-        <span class="ob-exchange">HYPERLIQUID PERP</span>
+      <div class="ob-selector">
+        <button class="ob-asset-btn active" id="ob-btn-BTC" onclick="switchAsset('BTC')">
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M22.2 13.9c.3-2-1.2-3.1-3.3-3.8l.7-2.7-1.6-.4-.7 2.6-1.3-.3.7-2.6-1.6-.4-.7 2.7-1-.3-2.2-.5-.4 1.7s1.2.3 1.1.3c.6.2.7.6.7.9l-1.7 6.9c-.1.2-.3.5-.8.4 0 0-1.1-.3-1.1-.3l-.8 1.8 2.1.5 1.1.3-.7 2.8 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.8c2.8.5 4.9.3 5.8-2.2.7-2-.0-3.1-1.5-3.9 1.1-.2 1.9-1 2.1-2.4zm-3.8 5.4c-.5 2-3.9.9-5 .6l.9-3.5c1.1.3 4.6.8 4.1 2.9zm.5-5.4c-.5 1.8-3.3.9-4.2.7l.8-3.2c.9.2 3.8.7 3.4 2.5z" fill="white"/></svg>
+          BTC
+        </button>
+        <button class="ob-asset-btn" id="ob-btn-ETH" onclick="switchAsset('ETH')">
+          <svg width="14" height="14" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.5 4v8.9l7.5 3.4L16.5 4z" fill="white" fill-opacity=".6"/><path d="M16.5 4L9 16.3l7.5-3.4V4z" fill="white"/><path d="M16.5 21.9v6.1l7.5-10.4-7.5 4.3z" fill="white" fill-opacity=".6"/><path d="M16.5 28v-6.1L9 17.6 16.5 28z" fill="white"/><path d="M16.5 20.6l7.5-4.3-7.5-3.4v7.7z" fill="white" fill-opacity=".2"/><path d="M9 16.3l7.5 4.3v-7.7L9 16.3z" fill="white" fill-opacity=".6"/></svg>
+          ETH
+        </button>
       </div>
       <div class="ob-stats">
-        <div class="ob-stat">
-          <span class="ob-stat-l">MARK</span>
-          <span class="ob-stat-v" id="ob-mark">—</span>
-        </div>
-        <div class="ob-stat">
-          <span class="ob-stat-l">FUNDING</span>
-          <span class="ob-stat-v" id="ob-funding">—</span>
-        </div>
-        <div class="ob-stat">
-          <span class="ob-stat-l">OI</span>
-          <span class="ob-stat-v" id="ob-oi">—</span>
-        </div>
-        <div class="ob-stat">
-          <span class="ob-stat-l">24H VOL</span>
-          <span class="ob-stat-v" id="ob-vol">—</span>
-        </div>
+        <div class="ob-stat"><span class="ob-stat-l">MARK</span><span class="ob-stat-v" id="ob-mark">—</span></div>
+        <div class="ob-stat"><span class="ob-stat-l">FUNDING</span><span class="ob-stat-v" id="ob-funding">—</span></div>
+        <div class="ob-stat"><span class="ob-stat-l">OPEN INT.</span><span class="ob-stat-v" id="ob-oi">—</span></div>
+        <div class="ob-stat"><span class="ob-stat-l">24H VOL</span><span class="ob-stat-v" id="ob-vol">—</span></div>
       </div>
     </div>
 
+    <!-- Column headers -->
     <div class="ob-cols-header">
-      <span class="ob-ch price">PRICE</span>
-      <span class="ob-ch size">SIZE</span>
-      <span class="ob-ch total">TOTAL</span>
+      <span class="ob-ch">PRICE</span>
+      <span class="ob-ch right">SIZE</span>
+      <span class="ob-ch right">TOTAL</span>
     </div>
 
+    <!-- Book -->
     <div class="ob-book">
       <div class="ob-asks" id="ob-asks"></div>
       <div class="ob-spread-row">
         <span class="ob-spread-label">SPREAD</span>
         <span class="ob-spread-val" id="ob-spread">—</span>
         <span class="ob-spread-pct" id="ob-spread-pct"></span>
+        <span class="ob-conn" id="ob-conn">● CONNECTING</span>
       </div>
       <div class="ob-bids" id="ob-bids"></div>
     </div>
 
-    <div class="ob-footer">
-      <div class="ob-conn" id="ob-conn">● CONNECTING</div>
-    </div>
   </div>
 </div>
 
@@ -1684,157 +1662,127 @@ setInterval(()=>{
 },2000);
 
 
-// ══════════════════════════════════════════
-//  HYPERLIQUID ORDERBOOK
-// ══════════════════════════════════════════
-(function(){
-  const LEVELS = 14; // rows per side
-  let hlWs = null;
-  let reconnTimer = null;
-  let book = { asks:[], bids:[] };
-  let markPrice = null;
 
-  function fmt$(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1}); }
-  function fmtSz(n){ return Number(n).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3}); }
-  function fmtM(n){ // millions
-    n=Number(n);
-    if(n>=1e9) return (n/1e9).toFixed(2)+'B';
-    if(n>=1e6) return (n/1e6).toFixed(1)+'M';
-    return n.toFixed(0);
-  }
+
+// ══ HYPERLIQUID ORDERBOOK ══
+(function(){
+  const LEVELS = 16;
+  let hlWs=null, reconn=null;
+  let book={asks:[],bids:[]};
+  let curAsset='BTC';
+
+  const fmt$=(n,dec=1)=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+  const fmtSz=(n)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+  const fmtM=(n)=>{n=Number(n);if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';return n.toFixed(0);};
+  const $=(id)=>document.getElementById(id);
 
   function renderBook(){
-    const asks = book.asks.slice(0,LEVELS);  // lowest ask first
-    const bids = book.bids.slice(0,LEVELS);  // highest bid first
-
-    // Compute cumulative totals for depth bars
-    let askTotals=[],bidTotals=[];
-    let cumA=0,cumB=0;
-    asks.forEach(([p,s])=>{ cumA+=Number(s); askTotals.push(cumA); });
-    bids.forEach(([p,s])=>{ cumB+=Number(s); bidTotals.push(cumB); });
+    const asks=book.asks.slice(0,LEVELS);
+    const bids=book.bids.slice(0,LEVELS);
+    let cumA=0,cumB=0,totA=[],totB=[];
+    asks.forEach(([p,s])=>{cumA+=Number(s);totA.push(cumA);});
+    bids.forEach(([p,s])=>{cumB+=Number(s);totB.push(cumB);});
     const maxA=cumA||1, maxB=cumB||1;
 
-    // Asks: reverse so largest ask is at top, best ask at bottom
-    const askRows=[...asks].reverse();
-    const askTotR=[...askTotals].reverse();
-    document.getElementById('ob-asks').innerHTML=askRows.map(([p,s],i)=>{
-      const tot=askTotR[i];
-      const pct=(tot/maxA*100).toFixed(1);
-      return `<div class="ob-row ask">
-        <div class="ob-bar" style="width:${pct}%"></div>
-        <span class="ob-price">${fmt$(p)}</span>
-        <span class="ob-size">${fmtSz(s)}</span>
-        <span class="ob-total">${fmtSz(tot)}</span>
-      </div>`;
+    // Asks reversed: biggest at top, best ask at bottom
+    const askRev=[...asks].reverse();
+    const totARev=[...totA].reverse();
+    $('ob-asks').innerHTML=askRev.map(([p,s],i)=>{
+      const pct=(totARev[i]/maxA*100).toFixed(1);
+      return `<div class="ob-row ask"><div class="ob-bar" style="width:${pct}%"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totARev[i])}</span></div>`;
     }).join('');
 
-    document.getElementById('ob-bids').innerHTML=bids.map(([p,s],i)=>{
-      const tot=bidTotals[i];
-      const pct=(tot/maxB*100).toFixed(1);
-      return `<div class="ob-row bid">
-        <div class="ob-bar" style="width:${pct}%"></div>
-        <span class="ob-price">${fmt$(p)}</span>
-        <span class="ob-size">${fmtSz(s)}</span>
-        <span class="ob-total">${fmtSz(tot)}</span>
-      </div>`;
+    $('ob-bids').innerHTML=bids.map(([p,s],i)=>{
+      const pct=(totB[i]/maxB*100).toFixed(1);
+      return `<div class="ob-row bid"><div class="ob-bar" style="width:${pct}%"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totB[i])}</span></div>`;
     }).join('');
 
-    // Spread
-    if(asks.length && bids.length){
-      const bestAsk=Number(asks[0][0]), bestBid=Number(bids[0][0]);
-      const spread=bestAsk-bestBid;
-      const spreadPct=(spread/bestAsk*100).toFixed(3);
-      document.getElementById('ob-spread').textContent=fmt$(spread);
-      document.getElementById('ob-spread-pct').textContent=spreadPct+'%';
+    if(asks.length&&bids.length){
+      const bestAsk=Number(asks[0][0]),bestBid=Number(bids[0][0]);
+      const sp=bestAsk-bestBid;
+      const se=$('ob-spread'),spe=$('ob-spread-pct');
+      if(se) se.textContent=fmt$(sp,2);
+      if(spe) spe.textContent=(sp/bestAsk*100).toFixed(3)+'%';
     }
   }
 
-  function setConn(state){
-    const el=document.getElementById('ob-conn');
-    if(!el) return;
-    if(state==='live'){ el.textContent='● LIVE'; el.className='ob-conn live'; }
-    else if(state==='err'){ el.textContent='● DISCONNECTED'; el.className='ob-conn err'; }
-    else { el.textContent='● CONNECTING'; el.className='ob-conn'; }
+  function setConn(s){
+    const el=$('ob-conn'); if(!el) return;
+    if(s==='live'){el.textContent='● LIVE';el.className='ob-conn live';}
+    else if(s==='err'){el.textContent='● OFF';el.className='ob-conn err';}
+    else{el.textContent='● …';el.className='ob-conn';}
   }
 
-  function connectHL(){
-    if(hlWs){ try{hlWs.close();}catch(_){} }
-    setConn('connecting');
-    hlWs=new WebSocket('wss://api.hyperliquid.xyz/ws');
+  function loadREST(coin){
+    fetch('https://api.hyperliquid.xyz/info',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'metaAndAssetCtxs'})
+    }).then(r=>r.json()).then(d=>{
+      if(!d||!d[1]) return;
+      const idx=d[0].universe.findIndex(u=>u.name===coin);
+      if(idx<0) return;
+      const ctx=d[1][idx];
+      const funding=(Number(ctx.funding||0)*100);
+      const fe=$('ob-funding');
+      if(fe){fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';fe.style.color=funding>=0?'#f87171':'#4ade80';}
+      const oe=$('ob-oi'); if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
+      const me=$('ob-mark'); if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
+      const ve=$('ob-vol'); if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
+    }).catch(()=>{});
+  }
 
+  function connect(coin){
+    book={asks:[],bids:[]};
+    if(hlWs){try{hlWs.close();}catch(_){}}
+    setConn('connecting');
+    loadREST(coin);
+    hlWs=new WebSocket('wss://api.hyperliquid.xyz/ws');
     hlWs.onopen=()=>{
       setConn('live');
-      // Subscribe to L2 orderbook for BTC
-      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'l2Book',coin:'BTC'}}));
-      // Subscribe to asset context for funding/OI (correct HL API format)
-      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'activeAssetCtx',coin:'BTC'}}));
-      // Also fetch meta via REST for immediate funding/OI display
-      fetch('https://api.hyperliquid.xyz/info',{
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({type:'metaAndAssetCtxs'})
-      }).then(r=>r.json()).then(d=>{
-        if(!d||!d[1]) return;
-        const btcIdx=d[0].universe.findIndex(u=>u.name==='BTC');
-        if(btcIdx<0) return;
-        const ctx=d[1][btcIdx];
-        const funding=(Number(ctx.funding)*100).toFixed(4);
-        const fe=document.getElementById('ob-funding');
-        if(fe){ fe.textContent=(funding>=0?'+':'')+funding+'%'; fe.style.color=Number(funding)>=0?'#ef4444':'#22c55e'; }
-        const oiUsd=Number(ctx.openInterest)*Number(ctx.markPx);
-        const ve=document.getElementById('ob-vol');
-        const oe=document.getElementById('ob-oi');
-        const me=document.getElementById('ob-mark');
-        if(oe) oe.textContent='$'+fmtM(oiUsd);
-        if(me) me.textContent=fmt$(Number(ctx.markPx));
-        if(ve && ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
-      }).catch(e=>console.warn('HL REST err',e));
+      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'l2Book',coin}}));
+      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'activeAssetCtx',coin}}));
     };
-
     hlWs.onmessage=(e)=>{
       try{
         const d=JSON.parse(e.data);
         if(!d.data) return;
-
-        // L2 book update
         if(d.channel==='l2Book'){
-          const b=d.data;
-          book.asks=b.levels[0].map(l=>[l.px,l.sz]); // asks
-          book.bids=b.levels[1].map(l=>[l.px,l.sz]); // bids
+          const lv=d.data.levels;
+          book.asks=lv[0].map(l=>[l.px,l.sz]);
+          book.bids=lv[1].map(l=>[l.px,l.sz]);
           renderBook();
-          // Mark price from midpoint
-          if(book.asks.length && book.bids.length){
+          if(book.asks.length&&book.bids.length){
             const mid=(Number(book.asks[0][0])+Number(book.bids[0][0]))/2;
-            document.getElementById('ob-mark').textContent=fmt$(mid);
+            const me=$('ob-mark'); if(me) me.textContent=fmt$(mid);
           }
         }
-
-        // Asset context: funding, OI - HL sends ctx directly in data
         if(d.channel==='activeAssetCtx'){
-          const ctx=d.data&&d.data.ctx ? d.data.ctx : d.data;
+          const ctx=d.data&&d.data.ctx?d.data.ctx:d.data;
           if(!ctx) return;
           const funding=Number(ctx.funding||0)*100;
-          const fe=document.getElementById('ob-funding');
-          if(fe){ fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%'; fe.style.color=funding>=0?'#ef4444':'#22c55e'; }
-          if(ctx.openInterest&&ctx.markPx){
-            const oi=document.getElementById('ob-oi');
-            if(oi) oi.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
-          }
-          if(ctx.dayNtlVlm){ const v=document.getElementById('ob-vol'); if(v) v.textContent='$'+fmtM(Number(ctx.dayNtlVlm)); }
-          if(ctx.markPx){ markPrice=Number(ctx.markPx); const m=document.getElementById('ob-mark'); if(m) m.textContent=fmt$(markPrice); }
+          const fe=$('ob-funding');
+          if(fe){fe.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';fe.style.color=funding>=0?'#f87171':'#4ade80';}
+          const oe=$('ob-oi'); if(oe&&ctx.openInterest&&ctx.markPx) oe.textContent='$'+fmtM(Number(ctx.openInterest)*Number(ctx.markPx));
+          const ve=$('ob-vol'); if(ve&&ctx.dayNtlVlm) ve.textContent='$'+fmtM(Number(ctx.dayNtlVlm));
+          const me=$('ob-mark'); if(me&&ctx.markPx) me.textContent=fmt$(Number(ctx.markPx));
         }
-      }catch(err){ console.warn('HL parse err',err); }
+      }catch(_){}
     };
-
     hlWs.onerror=()=>setConn('err');
-    hlWs.onclose=()=>{
-      setConn('err');
-      clearTimeout(reconnTimer);
-      reconnTimer=setTimeout(connectHL, 3000);
-    };
+    hlWs.onclose=()=>{setConn('err');clearTimeout(reconn);reconn=setTimeout(()=>connect(curAsset),3000);};
   }
 
-  // Start after page loads
-  setTimeout(connectHL, 500);
+  window.switchAsset=function(coin){
+    curAsset=coin;
+    document.querySelectorAll('.ob-asset-btn').forEach(b=>b.classList.remove('active'));
+    const btn=document.getElementById('ob-btn-'+coin);
+    if(btn) btn.classList.add('active');
+    // Clear stats
+    ['ob-mark','ob-funding','ob-oi','ob-vol','ob-spread','ob-spread-pct'].forEach(id=>{const e=$(id);if(e)e.textContent='—';});
+    connect(coin);
+  };
+
+  setTimeout(()=>connect('BTC'), 400);
 })();
 
 </script>
