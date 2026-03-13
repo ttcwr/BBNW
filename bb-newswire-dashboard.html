@@ -581,6 +581,81 @@ body{animation:flicker 8s ease infinite;}
   border-left:1px solid var(--b2);
   display:flex;flex-direction:column;overflow:hidden;
 }
+
+/* ── ORDERBOOK ── */
+.ob-header{
+  padding:10px 14px 8px;
+  border-bottom:1px solid var(--b2);
+  flex-shrink:0;
+}
+.ob-title{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
+.ob-sym{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--t0);letter-spacing:.08em;}
+.ob-exchange{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.15em;}
+.ob-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;}
+.ob-stat{display:flex;flex-direction:column;gap:1px;}
+.ob-stat-l{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;}
+.ob-stat-v{font-family:var(--mono);font-size:11px;color:var(--t1);font-variant-numeric:tabular-nums;}
+
+.ob-cols-header{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  padding:4px 14px;
+  border-bottom:1px solid var(--b1);
+  flex-shrink:0;
+}
+.ob-ch{font-family:var(--mono);font-size:7.5px;color:var(--t4);letter-spacing:.12em;}
+.ob-ch.size,.ob-ch.total{text-align:right;}
+
+.ob-book{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;
+  position:relative;
+}
+.ob-asks{
+  flex:1;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.ob-bids{
+  flex:1;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-start;
+}
+
+.ob-row{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  padding:1.5px 14px;
+  position:relative;
+  cursor:default;
+  transition:background .05s;
+}
+.ob-row:hover{background:rgba(255,255,255,.03);}
+.ob-row .ob-bar{
+  position:absolute;top:0;bottom:0;right:0;
+  opacity:.15;pointer-events:none;
+}
+.ob-row.ask .ob-bar{background:#ef4444;}
+.ob-row.bid .ob-bar{background:#22c55e;}
+.ob-row .ob-price{font-family:var(--mono);font-size:10.5px;font-variant-numeric:tabular-nums;z-index:1;}
+.ob-row.ask .ob-price{color:#ef4444;}
+.ob-row.bid .ob-price{color:#22c55e;}
+.ob-row .ob-size,.ob-row .ob-total{
+  font-family:var(--mono);font-size:10px;color:var(--t2);
+  text-align:right;font-variant-numeric:tabular-nums;z-index:1;
+}
+
+.ob-spread-row{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 14px;
+  border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);
+  background:var(--s1);flex-shrink:0;
+}
+.ob-spread-label{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;}
+.ob-spread-val{font-family:var(--mono);font-size:10px;color:var(--t1);font-variant-numeric:tabular-nums;}
+.ob-spread-pct{font-family:var(--mono);font-size:8px;color:var(--t4);}
+
+.ob-footer{
+  padding:5px 14px;border-top:1px solid var(--b2);flex-shrink:0;
+}
+.ob-conn{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--t4);}
+.ob-conn.live{color:#22c55e;}
+.ob-conn.err{color:#ef4444;}
 .ph{
   padding:7px 16px;flex-shrink:0;
   font-family:var(--mono);font-size:7.5px;text-transform:uppercase;letter-spacing:.2em;
@@ -955,29 +1030,52 @@ body{animation:flicker 8s ease infinite;}
     <div class="feed" id="feed"></div>
   </div>
 
-  <!-- RIGHT PANEL -->
+  <!-- RIGHT PANEL — ORDERBOOK -->
   <div class="right">
-    <div class="d-pane" id="dw">
-      <div class="d-empty">
-        <span class="d-empty-ico">◈</span>
-        Select a headline to review<br>
-        <span style="font-size:9px;opacity:.28">P push · S skip · E edit · ↑↓ navigate</span>
+    <div class="ob-header">
+      <div class="ob-title">
+        <span class="ob-sym">BTC</span>
+        <span class="ob-exchange">HYPERLIQUID PERP</span>
       </div>
-    </div>
-
-    <div class="ph">Compose Alert</div>
-    <div class="comp">
-      <textarea class="comp-ta" id="ta" placeholder="Load a headline or write manually…&#10;Your analysis = what subscribers pay for."></textarea>
-      <div class="comp-ft">
-        <span class="comp-cc" id="cc">0 chars</span>
-        <div class="comp-btns">
-          <button class="tbtn" onclick="addTags()"># Tags</button>
-          <button class="tbtn" onclick="clearTA()">✕ Clear</button>
-          <button class="tgbtn" onclick="pushComp()">✈ Push to Telegram</button>
+      <div class="ob-stats">
+        <div class="ob-stat">
+          <span class="ob-stat-l">MARK</span>
+          <span class="ob-stat-v" id="ob-mark">—</span>
+        </div>
+        <div class="ob-stat">
+          <span class="ob-stat-l">FUNDING</span>
+          <span class="ob-stat-v" id="ob-funding">—</span>
+        </div>
+        <div class="ob-stat">
+          <span class="ob-stat-l">OI</span>
+          <span class="ob-stat-v" id="ob-oi">—</span>
+        </div>
+        <div class="ob-stat">
+          <span class="ob-stat-l">24H VOL</span>
+          <span class="ob-stat-v" id="ob-vol">—</span>
         </div>
       </div>
     </div>
 
+    <div class="ob-cols-header">
+      <span class="ob-ch price">PRICE</span>
+      <span class="ob-ch size">SIZE</span>
+      <span class="ob-ch total">TOTAL</span>
+    </div>
+
+    <div class="ob-book">
+      <div class="ob-asks" id="ob-asks"></div>
+      <div class="ob-spread-row">
+        <span class="ob-spread-label">SPREAD</span>
+        <span class="ob-spread-val" id="ob-spread">—</span>
+        <span class="ob-spread-pct" id="ob-spread-pct"></span>
+      </div>
+      <div class="ob-bids" id="ob-bids"></div>
+    </div>
+
+    <div class="ob-footer">
+      <div class="ob-conn" id="ob-conn">● CONNECTING</div>
+    </div>
   </div>
 </div>
 
@@ -1103,7 +1201,18 @@ const WS_URL = BK.replace('https://','wss://').replace('http://','ws://') + '/ws
 
 function toggleCat(el){
   const c=el.dataset.c;
-  onCats.has(c)?(onCats.delete(c),el.classList.remove('on')):(onCats.add(c),el.classList.add('on'));
+  const allCats=['cm','cr','cg','cc','cw'];
+  // If clicking the only active cat -> show all
+  if(onCats.size===1 && onCats.has(c)){
+    allCats.forEach(x=>onCats.add(x));
+    document.querySelectorAll('.cat').forEach(b=>b.classList.add('on'));
+  } else {
+    // Show only this category
+    allCats.forEach(x=>onCats.delete(x));
+    document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
+    onCats.add(c);
+    el.classList.add('on');
+  }
   render();
 }
 let srcFilter=null;
@@ -1187,13 +1296,13 @@ function norm(r){
   return{
     id:      r.id,
     source:  r.source||'?',
-    cat:     r.cat||fS(r.source||'').c||'cm',  /* pass server cat directly */
+    cat:     r.cat||fS(r.source||'').c||'cm',
     headline:r.headline||'',
     ai:      cleanAi||'',
     score:   r.score||r.ai_score||0.5,
     status:  r.status||'pending',
     url:     r.url||'#',
-    time:    r.published||hm(new Date()),
+    time:    r.published||new Date().toISOString(),
     _ts:     r.published||new Date().toISOString(),
     _ts:     r.published||r.time||new Date().toISOString(),
   };
@@ -1222,7 +1331,7 @@ function render(){
     if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase())return false;
     if(srcFilter&&it.source.toLowerCase()!==srcFilter.toLowerCase()) return false;
     return true;
-  });
+  }).sort((a,b)=>new Date(b._ts)-new Date(a._ts));
   if(!list.length){feed.innerHTML='<div class="feed-empty"><span class="fe-ico">◌</span><span class="fe-t">No items match filters</span></div>';stats();return;}
 
   feed.innerHTML=list.map(it=>{
@@ -1574,6 +1683,148 @@ setInterval(()=>{
   const tq=document.getElementById('tk-queue');if(tq)tq.textContent=items.filter(x=>x.status==='pending').length;
   const tt=document.getElementById('tk-time');if(tt){const n=new Date();tt.textContent=n.toUTCString().split(' ')[4];}
 },2000);
+
+
+// ══════════════════════════════════════════
+//  HYPERLIQUID ORDERBOOK
+// ══════════════════════════════════════════
+(function(){
+  const LEVELS = 14; // rows per side
+  let hlWs = null;
+  let reconnTimer = null;
+  let book = { asks:[], bids:[] };
+  let markPrice = null;
+
+  function fmt$(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1}); }
+  function fmtSz(n){ return Number(n).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3}); }
+  function fmtM(n){ // millions
+    n=Number(n);
+    if(n>=1e9) return (n/1e9).toFixed(2)+'B';
+    if(n>=1e6) return (n/1e6).toFixed(1)+'M';
+    return n.toFixed(0);
+  }
+
+  function renderBook(){
+    const asks = book.asks.slice(0,LEVELS);  // lowest ask first
+    const bids = book.bids.slice(0,LEVELS);  // highest bid first
+
+    // Compute cumulative totals for depth bars
+    let askTotals=[],bidTotals=[];
+    let cumA=0,cumB=0;
+    asks.forEach(([p,s])=>{ cumA+=Number(s); askTotals.push(cumA); });
+    bids.forEach(([p,s])=>{ cumB+=Number(s); bidTotals.push(cumB); });
+    const maxA=cumA||1, maxB=cumB||1;
+
+    // Asks: reverse so largest ask is at top, best ask at bottom
+    const askRows=[...asks].reverse();
+    const askTotR=[...askTotals].reverse();
+    document.getElementById('ob-asks').innerHTML=askRows.map(([p,s],i)=>{
+      const tot=askTotR[i];
+      const pct=(tot/maxA*100).toFixed(1);
+      return `<div class="ob-row ask">
+        <div class="ob-bar" style="width:${pct}%"></div>
+        <span class="ob-price">${fmt$(p)}</span>
+        <span class="ob-size">${fmtSz(s)}</span>
+        <span class="ob-total">${fmtSz(tot)}</span>
+      </div>`;
+    }).join('');
+
+    document.getElementById('ob-bids').innerHTML=bids.map(([p,s],i)=>{
+      const tot=bidTotals[i];
+      const pct=(tot/maxB*100).toFixed(1);
+      return `<div class="ob-row bid">
+        <div class="ob-bar" style="width:${pct}%"></div>
+        <span class="ob-price">${fmt$(p)}</span>
+        <span class="ob-size">${fmtSz(s)}</span>
+        <span class="ob-total">${fmtSz(tot)}</span>
+      </div>`;
+    }).join('');
+
+    // Spread
+    if(asks.length && bids.length){
+      const bestAsk=Number(asks[0][0]), bestBid=Number(bids[0][0]);
+      const spread=bestAsk-bestBid;
+      const spreadPct=(spread/bestAsk*100).toFixed(3);
+      document.getElementById('ob-spread').textContent=fmt$(spread);
+      document.getElementById('ob-spread-pct').textContent=spreadPct+'%';
+    }
+  }
+
+  function setConn(state){
+    const el=document.getElementById('ob-conn');
+    if(!el) return;
+    if(state==='live'){ el.textContent='● LIVE'; el.className='ob-conn live'; }
+    else if(state==='err'){ el.textContent='● DISCONNECTED'; el.className='ob-conn err'; }
+    else { el.textContent='● CONNECTING'; el.className='ob-conn'; }
+  }
+
+  function connectHL(){
+    if(hlWs){ try{hlWs.close();}catch(_){} }
+    setConn('connecting');
+    hlWs=new WebSocket('wss://api.hyperliquid.xyz/ws');
+
+    hlWs.onopen=()=>{
+      setConn('live');
+      // Subscribe to L2 orderbook for BTC
+      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'l2Book',coin:'BTC'}}));
+      // Subscribe to BTC meta for funding/OI
+      hlWs.send(JSON.stringify({method:'subscribe',subscription:{type:'activeAssetCtx',coin:'BTC'}}));
+    };
+
+    hlWs.onmessage=(e)=>{
+      try{
+        const d=JSON.parse(e.data);
+        if(!d.data) return;
+
+        // L2 book update
+        if(d.channel==='l2Book'){
+          const b=d.data;
+          book.asks=b.levels[0].map(l=>[l.px,l.sz]); // asks
+          book.bids=b.levels[1].map(l=>[l.px,l.sz]); // bids
+          renderBook();
+          // Mark price from midpoint
+          if(book.asks.length && book.bids.length){
+            const mid=(Number(book.asks[0][0])+Number(book.bids[0][0]))/2;
+            document.getElementById('ob-mark').textContent=fmt$(mid);
+          }
+        }
+
+        // Asset context: funding, OI, volume
+        if(d.channel==='activeAssetCtx'){
+          const ctx=d.data.ctx;
+          if(!ctx) return;
+          const funding=Number(ctx.funding)*100;
+          const fundingEl=document.getElementById('ob-funding');
+          if(fundingEl){
+            fundingEl.textContent=(funding>=0?'+':'')+funding.toFixed(4)+'%';
+            fundingEl.style.color=funding>=0?'#ef4444':'#22c55e';
+          }
+          if(ctx.openInterest){
+            const oiUsd=Number(ctx.openInterest)*Number(ctx.markPx||0);
+            document.getElementById('ob-oi').textContent='$'+fmtM(oiUsd);
+          }
+          if(ctx.dayNtlVlm){
+            document.getElementById('ob-vol').textContent='$'+fmtM(Number(ctx.dayNtlVlm));
+          }
+          if(ctx.markPx){
+            markPrice=Number(ctx.markPx);
+            document.getElementById('ob-mark').textContent=fmt$(markPrice);
+          }
+        }
+      }catch(err){ console.warn('HL parse err',err); }
+    };
+
+    hlWs.onerror=()=>setConn('err');
+    hlWs.onclose=()=>{
+      setConn('err');
+      clearTimeout(reconnTimer);
+      reconnTimer=setTimeout(connectHL, 3000);
+    };
+  }
+
+  // Start after page loads
+  setTimeout(connectHL, 500);
+})();
 
 </script>
 
