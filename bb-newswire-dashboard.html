@@ -474,6 +474,10 @@
   color:var(--t2);letter-spacing:.1em;text-transform:uppercase;
   background:none;border:none;cursor:pointer;padding:0;
 }
+.theme-design-label{
+  color:var(--t4);font-size:7.5px;letter-spacing:.18em;
+  border-right:1px solid var(--b2);padding-right:7px;margin-right:0;
+}
 .theme-btn:hover{color:var(--t0);}
 .theme-arrow{font-size:8px;color:var(--t3);transition:transform .15s;}
 .theme-menu{
@@ -1047,84 +1051,101 @@ body{animation:flicker 8s ease infinite;}
 }
 .ob-expand-btn:hover{border-color:var(--b4);color:var(--t0);}
 
-.ob-brand{
-  display:flex;align-items:center;gap:6px;
-  padding:6px 14px;border-top:1px solid var(--b1);
-  flex-shrink:0;
+.ob-brand-inline{
+  display:flex;align-items:center;gap:5px;margin-right:4px;
 }
 .ob-brand-text{
   font-family:var(--mono);font-size:7px;
-  color:var(--t4);letter-spacing:.14em;text-transform:uppercase;
-}
-.ob-brand-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:#00DCFA;margin-left:auto;
-  animation:brand-pulse 2s ease-in-out infinite;
+  color:var(--t4);letter-spacing:.12em;text-transform:uppercase;
+  white-space:nowrap;
 }
 @keyframes brand-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,220,250,.4);}50%{opacity:.7;box-shadow:0 0 0 4px rgba(0,220,250,0);}}
 
 /* ── EXPANDED ORDERBOOK MODE ── */
-.ob-expanded .sidebar{display:none;}
-.ob-expanded .feed-col{display:none;}
+.ob-expanded .sidebar{display:none!important;}
+.ob-expanded .feed-col{display:none!important;}
+.ob-expanded .topbar,.ob-expanded .statstrip,.ob-expanded .catbar{display:none!important;}
+.ob-expanded .layout{grid-template-columns:0 0 1fr!important;}
+
 .ob-expanded #ob-panel{
-  position:fixed;top:0;left:0;right:0;bottom:0;
+  position:fixed;inset:0;
   z-index:500;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:auto;
+  display:flex;
+  flex-direction:column;
   background:var(--bg);
   overflow:hidden;
+  width:100vw!important;
+  border-left:none!important;
 }
+
+/* Header stays same style, horizontal */
 .ob-expanded #ob-panel .ob-header{
-  grid-column:1/3;
-  display:flex;align-items:center;gap:24px;
-  padding:12px 24px;
+  flex-direction:row!important;
+  align-items:center;
+  padding:10px 20px;
   border-bottom:1px solid var(--b2);
-  flex-direction:row;
+  flex-shrink:0;
+  gap:20px;
 }
-.ob-expanded #ob-panel .ob-top-row{margin-bottom:0;flex:0 0 auto;}
+.ob-expanded #ob-panel .ob-top-row{margin-bottom:0;flex-shrink:0;}
 .ob-expanded #ob-panel .ob-stats{
-  display:flex;flex-direction:row;gap:24px;flex:1;
-  grid-row:unset;
+  display:flex!important;flex-direction:row!important;
+  gap:20px;flex:1;
 }
+.ob-expanded #ob-panel .ob-stat{flex-direction:row;align-items:baseline;gap:6px;}
+
+/* Column headers: two-pane */
 .ob-expanded #ob-panel .ob-cols-header{
-  grid-column:1/3;
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:6px 24px;
+  display:grid!important;
+  grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;
+  padding:4px 20px;
+  border-bottom:1px solid var(--b1);
+  flex-shrink:0;
 }
+.ob-expanded .ob-ch-asks,.ob-expanded .ob-ch-bids{
+  display:contents;
+}
+
+/* Main book: two columns */
 .ob-expanded #ob-panel .ob-book{
-  grid-column:1/3;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr auto 1fr;
-  overflow:hidden;
   flex:1;
+  display:grid!important;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr auto;
+  overflow:hidden;
+  min-height:0;
 }
 .ob-expanded #ob-panel .ob-asks{
-  grid-column:1/1;grid-row:1/4;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  border-right:1px solid var(--b2);overflow:hidden;
-}
-.ob-expanded #ob-panel .ob-spread-row{
-  grid-column:2/3;grid-row:2/3;
-  flex-shrink:0;border-top:none;border-bottom:none;
-  padding:8px 24px;align-self:center;
+  grid-column:1;grid-row:1;
+  display:flex!important;
+  flex-direction:column;
+  justify-content:flex-end;
+  overflow:hidden;
+  border-right:1px solid var(--b2);
 }
 .ob-expanded #ob-panel .ob-bids{
-  grid-column:2/3;grid-row:1/4;
-  display:flex;flex-direction:column;justify-content:flex-start;
-  padding-top:44px;overflow:hidden;
+  grid-column:2;grid-row:1;
+  display:flex!important;
+  flex-direction:column;
+  justify-content:flex-start;
+  overflow:hidden;
 }
-.ob-expanded #ob-panel .ob-brand{
-  grid-column:1/3;
-  padding:8px 24px;
+.ob-expanded #ob-panel .ob-spread-row{
+  grid-column:1/3;grid-row:2;
+  flex-shrink:0;
+  padding:5px 20px;
 }
-.ob-expanded #ob-panel .ob-row{padding:4px 24px;}
-.ob-expanded #ob-panel .ob-price{font-size:15px!important;}
+
+/* Bigger rows in expanded */
+.ob-expanded #ob-panel .ob-row{
+  padding:3.5px 20px;
+}
+.ob-expanded #ob-panel .ob-price{font-size:13px!important;font-weight:600!important;}
 .ob-expanded #ob-panel .ob-size,
-.ob-expanded #ob-panel .ob-total{font-size:14px!important;}
+.ob-expanded #ob-panel .ob-total{font-size:12px!important;}
+
+/* Rotate expand icon */
 .ob-expanded .ob-expand-btn svg{transform:rotate(45deg);}
-.ob-expanded .topbar,.ob-expanded .statstrip,.ob-expanded .catbar{display:none;}
 
 .ob-stat-v{font-family:var(--mono);font-size:13px;color:var(--t0);font-variant-numeric:tabular-nums;letter-spacing:.01em;font-weight:600;}
 
@@ -1411,7 +1432,7 @@ body{animation:flicker 8s ease infinite;}
     </div>
     <div class="theme-switcher" id="themeSwitcher">
       <button class="theme-btn" onclick="toggleThemeMenu(event)">
-        <span id="theme-label">RETRO</span>
+        <span class="theme-design-label">DESIGN</span><span id="theme-label">RETRO</span>
         <span class="theme-arrow" id="theme-arrow">▾</span>
       </button>
       <div class="theme-menu" id="themeMenu">
@@ -1574,6 +1595,10 @@ body{animation:flicker 8s ease infinite;}
             ETH
           </button>
         </div>
+        <div class="ob-brand-inline">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6C6 6 10 10 10 16C10 22 6 26 6 26" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/><path d="M26 6C26 6 22 10 22 16C22 22 26 26 26 26" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/><path d="M10 16H22" stroke="#00DCFA" stroke-width="3.5" stroke-linecap="round"/></svg>
+          <span class="ob-brand-text">LIVE BY HYPERLIQUID</span>
+        </div>
         <button class="ob-expand-btn" id="ob-expand-btn" onclick="toggleObExpand()" title="Expand orderbook">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
         </button>
@@ -1603,11 +1628,7 @@ body{animation:flicker 8s ease infinite;}
       <div class="ob-bids" id="ob-bids"></div>
     </div>
 
-    <div class="ob-brand">
-      <svg width="14" height="14" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#00DCFA"/><path d="M12 28L20 12L28 28" stroke="#001A1E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 23H25.5" stroke="#001A1E" stroke-width="3" stroke-linecap="round"/></svg>
-      <span class="ob-brand-text">LIVE DATA BY HYPERLIQUID</span>
-      <span class="ob-brand-dot"></span>
-    </div>
+
 
   </div>
 </div>
@@ -2223,7 +2244,7 @@ setInterval(()=>{
 
 // ══ HYPERLIQUID ORDERBOOK ══
 (function(){
-  let LEVELS = 16; window.renderBook = renderBook;
+  let LEVELS = 16; window.renderBook = renderBook; window.OB_BOOK = book;
   let hlWs=null, reconn=null;
   let book={asks:[],bids:[]};
   let curAsset='BTC';
@@ -2249,9 +2270,14 @@ setInterval(()=>{
       return `<div class="ob-row ask"><div class="ob-bar" style="width:${pct}%"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totARev[i])}</span></div>`;
     }).join('');
 
+    const expanded = document.body.classList.contains('ob-expanded');
+    // In expanded mode: bids bar fills from LEFT (reversed for visual)
     $('ob-bids').innerHTML=bids.map(([p,s],i)=>{
       const pct=(totB[i]/maxB*100).toFixed(1);
-      return `<div class="ob-row bid"><div class="ob-bar" style="width:${pct}%"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totB[i])}</span></div>`;
+      const barStyle = expanded
+        ? `left:0;right:auto;width:${pct}%`
+        : `right:0;left:auto;width:${pct}%`;
+      return `<div class="ob-row bid"><div class="ob-bar" style="${barStyle}"></div><span class="ob-price">${fmt$(p)}</span><span class="ob-size">${fmtSz(s)}</span><span class="ob-total">${fmtSz(totB[i])}</span></div>`;
     }).join('');
 
     if(asks.length&&bids.length){
