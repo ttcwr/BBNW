@@ -729,7 +729,7 @@ body{animation:flicker 8s ease infinite;}
 .ob-asset-btn:hover{border-color:var(--b3);color:var(--t1);}
 .ob-asset-btn.active{border-color:var(--t0);color:var(--t0);background:rgba(255,255,255,.06);}
 .ob-brand-inline{display:flex;align-items:center;gap:5px;flex:1;justify-content:center;}
-.ob-brand-text{font-family:var(--mono);font-size:7px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+.ob-brand-text{font-family:var(--mono);font-size:7.5px;color:var(--t2);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
 .ob-expand-btn{
   display:flex;align-items:center;justify-content:center;
   width:28px;height:28px;border-radius:3px;flex-shrink:0;
@@ -743,53 +743,117 @@ body{animation:flicker 8s ease infinite;}
 .ob-cols-header{display:grid;grid-template-columns:1.2fr .9fr .9fr;padding:4px 14px;border-bottom:1px solid var(--b1);flex-shrink:0;}
 .ob-ch{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.12em;font-weight:500;}
 .ob-ch.right{text-align:right;}
-.ob-book{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.ob-book{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;position:relative;}
 .ob-asks{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;min-height:0;}
 .ob-bids{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;}
-.ob-row{display:grid;grid-template-columns:1.2fr .9fr .9fr;padding:3px 14px;position:relative;cursor:default;}
-.ob-row:hover{filter:brightness(1.2);}
-.ob-bar{position:absolute;top:0;bottom:0;right:0;pointer-events:none;transition:width .15s;}
-.ob-row.ask .ob-bar{background:rgba(239,68,68,.22);}
-.ob-row.bid .ob-bar{background:rgba(34,197,94,.18);}
-.ob-price{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;font-weight:600;position:relative;z-index:1;}
-.ob-row.ask .ob-price{color:#ff5555;}
-.ob-row.bid .ob-price{color:#00e676;}
+.ob-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;padding:2.5px 12px;position:relative;cursor:default;transition:opacity .08s;}
+.ob-row:hover{opacity:.75;}
+.ob-bar{position:absolute;top:0;bottom:0;right:0;pointer-events:none;transition:width .2s ease-out;}
+.ob-row.ask .ob-bar{background:rgba(255,60,60,.18);}
+.ob-row.bid .ob-bar{background:rgba(0,220,100,.15);}
+.ob-price{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;font-weight:700;position:relative;z-index:1;letter-spacing:-.01em;}
+.ob-row.ask .ob-price{color:#ff4d4d;}
+.ob-row.bid .ob-price{color:#00dc64;}
 .ob-size,.ob-total{font-family:var(--mono);font-size:11px;color:var(--t2);text-align:right;font-variant-numeric:tabular-nums;position:relative;z-index:1;}
-.ob-spread-row{display:flex;align-items:center;gap:6px;padding:4px 14px;flex-shrink:0;border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);background:rgba(255,255,255,.02);}
-.ob-spread-label{font-family:var(--mono);font-size:7px;color:var(--t4);letter-spacing:.15em;}
-.ob-spread-val{font-family:var(--mono);font-size:12px;color:var(--t1);font-variant-numeric:tabular-nums;font-weight:600;}
-.ob-spread-pct{font-family:var(--mono);font-size:9px;color:var(--t4);}
-.ob-conn{font-family:var(--mono);font-size:7px;letter-spacing:.1em;color:var(--t4);margin-left:auto;}
-.ob-conn.live{color:#00e676;}
-.ob-conn.err{color:#ff5555;}
+.ob-spread-row{display:flex;align-items:center;gap:8px;padding:5px 12px;flex-shrink:0;border-top:1px solid var(--b2);border-bottom:1px solid var(--b2);background:var(--s1);}
+.ob-spread-label{font-family:var(--mono);font-size:7.5px;color:var(--t4);letter-spacing:.14em;text-transform:uppercase;}
+.ob-spread-val{font-family:var(--mono);font-size:13px;color:var(--t0);font-variant-numeric:tabular-nums;font-weight:700;}
+.ob-spread-pct{font-family:var(--mono);font-size:9px;color:var(--t3);}
+.ob-conn{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--t4);margin-left:auto;}
+.ob-conn.live{color:#00dc64;}
+.ob-conn.err{color:#ff4d4d;}
 
-/* ── EXPANDED MODE ── */
-.ob-expanded .sidebar,.ob-expanded .feed-panel,.ob-expanded .topbar,
-.ob-expanded .statstrip,.ob-expanded .catbar{display:none!important;}
-.ob-expanded .layout{grid-template-columns:0 0 1fr!important;}
-.ob-expanded #ob-panel{
+/* ── EXPANDED MODE — TapeSurf style ── */
+.ob-expanded .sidebar,
+.ob-expanded .feed-panel,
+.ob-expanded .topbar,
+.ob-expanded .statstrip,
+.ob-expanded .catbar { display:none!important; }
+
+.ob-expanded .layout { grid-template-columns:0 0 1fr!important; }
+
+.ob-expanded #ob-panel {
   position:fixed;inset:0;z-index:999;
   width:100vw!important;height:100vh!important;
   display:flex;flex-direction:column;
   background:var(--bg);border-left:none!important;overflow:hidden;
 }
-.ob-expanded #ob-panel .ob-header{
-  flex-direction:row!important;flex-shrink:0;
-  padding:10px 20px;border-bottom:1px solid var(--b2);
-  align-items:center;gap:20px;
+
+/* Slim top bar in expanded mode */
+.ob-expanded #ob-panel .ob-header {
+  display:flex!important;flex-direction:row!important;
+  flex-shrink:0;padding:8px 20px;
+  border-bottom:1px solid var(--b2);
+  align-items:center;gap:16px;
 }
-.ob-expanded #ob-panel .ob-top-row{margin-bottom:0!important;}
-.ob-expanded #ob-panel .ob-stats{display:flex!important;flex-direction:row!important;gap:24px;align-items:center;}
-.ob-expanded #ob-panel .ob-stat{flex-direction:row;align-items:baseline;gap:6px;}
-.ob-expanded #ob-panel .ob-cols-header{display:grid!important;grid-template-columns:1.2fr .9fr .9fr 1px 1.2fr .9fr .9fr;padding:4px 0;border-bottom:1px solid var(--b1);flex-shrink:0;}
-.ob-expanded #ob-panel .ob-book{flex:1;display:grid!important;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;overflow:hidden;min-height:0;}
-.ob-expanded #ob-panel .ob-asks{grid-column:1;grid-row:1;display:flex!important;flex-direction:column;justify-content:flex-end;overflow:hidden;border-right:1px solid var(--b2);}
-.ob-expanded #ob-panel .ob-bids{grid-column:2;grid-row:1;display:flex!important;flex-direction:column;justify-content:flex-start;overflow:hidden;}
-.ob-expanded #ob-panel .ob-spread-row{grid-column:1/3;grid-row:2;padding:6px 20px;}
-.ob-expanded #ob-panel .ob-row{padding:4px 20px;}
-.ob-expanded #ob-panel .ob-price{font-size:13px!important;font-weight:600!important;}
-.ob-expanded #ob-panel .ob-size,.ob-expanded #ob-panel .ob-total{font-size:12px!important;}
-.ob-expanded .ob-expand-btn svg{transform:rotate(45deg);}
+.ob-expanded #ob-panel .ob-top-row { margin-bottom:0!important; }
+.ob-expanded #ob-panel .ob-stats {
+  display:flex!important;flex-direction:row!important;
+  gap:24px;align-items:center;flex:1;
+}
+.ob-expanded #ob-panel .ob-stat { flex-direction:row;align-items:baseline;gap:5px; }
+.ob-expanded #ob-panel .ob-stat-l { font-size:8px!important; }
+.ob-expanded #ob-panel .ob-stat-v { font-size:15px!important; }
+
+/* Hide single col header — use two-pane headers */
+.ob-expanded #ob-panel .ob-cols-header { display:none!important; }
+
+/* Main book: asks LEFT, bids RIGHT — TapeSurf layout */
+.ob-expanded #ob-panel .ob-book {
+  flex:1;display:grid!important;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto 1fr;
+  overflow:hidden;min-height:0;
+}
+
+/* Column sub-headers for each side */
+.ob-expanded #ob-panel .ob-asks::before {
+  content:'PRICE                    SIZE                   TOTAL';
+  display:block;
+  font-family:var(--mono);font-size:8px;color:var(--t4);
+  letter-spacing:.1em;padding:4px 20px;
+  border-bottom:1px solid var(--b1);flex-shrink:0;
+}
+.ob-expanded #ob-panel .ob-bids::before {
+  content:'PRICE                    SIZE                   TOTAL';
+  display:block;
+  font-family:var(--mono);font-size:8px;color:var(--t4);
+  letter-spacing:.1em;padding:4px 20px;
+  border-bottom:1px solid var(--b1);flex-shrink:0;border-left:1px solid var(--b2);
+}
+
+.ob-expanded #ob-panel .ob-asks {
+  grid-column:1;grid-row:1/3;
+  display:flex!important;flex-direction:column;
+  justify-content:flex-end;overflow:hidden;
+  border-right:1px solid var(--b2);
+}
+.ob-expanded #ob-panel .ob-bids {
+  grid-column:2;grid-row:1/3;
+  display:flex!important;flex-direction:column;
+  justify-content:flex-start;overflow:hidden;
+}
+.ob-expanded #ob-panel .ob-spread-row {
+  position:absolute;
+  left:50%;transform:translateX(-50%);
+  top:50%;margin-top:-14px;
+  z-index:10;
+  padding:3px 16px;
+  background:var(--s2);
+  border:1px solid var(--b3);
+  border-radius:3px;
+  white-space:nowrap;
+}
+
+/* Bigger rows in expanded */
+.ob-expanded #ob-panel .ob-row { padding:3px 20px; }
+.ob-expanded #ob-panel .ob-price { font-size:13.5px!important;font-weight:700!important; }
+.ob-expanded #ob-panel .ob-size,
+.ob-expanded #ob-panel .ob-total { font-size:12.5px!important; }
+/* Bids: depth bar from left */
+.ob-expanded #ob-panel .ob-bids .ob-bar { right:auto!important;left:0!important; }
+.ob-expanded .ob-expand-btn svg { transform:rotate(45deg); }
+
 
 /* ── THEME SWITCHER ── */
 .theme-switcher{position:relative;display:flex;align-items:center;padding:0 14px;border-left:1px solid var(--b2);cursor:pointer;user-select:none;}
@@ -1307,12 +1371,11 @@ body{animation:flicker 8s ease infinite;}
 
 <!-- ══ CATEGORY + FILTER BAR ══ -->
 <div class="catbar">
-  <div class="cat cx on" data-c="cx" onclick="toggleCat(this)"><div class="cpip"></div>𝕏</div>
-  <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale Alert</div>
-  <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain Data</div>
   <div class="cat cm on" data-c="cm" onclick="toggleCat(this)"><div class="cpip"></div>Media</div>
-  <div class="cat cg on" data-c="cg" onclick="toggleCat(this)"><div class="cpip"></div>.Gov</div>
   <div class="cat cr on" data-c="cr" onclick="toggleCat(this)"><div class="cpip"></div>Wire</div>
+  <div class="cat cg on" data-c="cg" onclick="toggleCat(this)"><div class="cpip"></div>.Gov</div>
+  <div class="cat cc on" data-c="cc" onclick="toggleCat(this)"><div class="cpip"></div>Onchain</div>
+  <div class="cat cw on" data-c="cw" onclick="toggleCat(this)"><div class="cpip"></div>Whale</div>
 
   <div class="cat-div"></div>
 
@@ -1368,19 +1431,8 @@ body{animation:flicker 8s ease infinite;}
       <div class="sb-hdr"><span class="sb-lbl">Onchain</span></div>
       <div class="src-row cc" onclick="toggleSrcRow(this,'Glassnode')"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
       <div class="src-row cc" onclick="toggleSrcRow(this,'CryptoQuant')"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="sb-hdr"><span class="sb-lbl">Keyboard</span></div>
     </div>
-    <div class="kbd-block">
-      <div class="sb-hdr kbd-hdr"><span class="sb-lbl">Keyboard</span></div>
-      <div class="kbd-grid">
-        <div class="kbd-row"><span class="kbd-key">P</span><span class="kbd-desc">Push</span></div>
-        <div class="kbd-row"><span class="kbd-key">S</span><span class="kbd-desc">Skip</span></div>
-        <div class="kbd-row"><span class="kbd-key">E</span><span class="kbd-desc">Edit</span></div>
-        <div class="kbd-row"><span class="kbd-key">C</span><span class="kbd-desc">Copy</span></div>
-        <div class="kbd-row"><span class="kbd-key">↑↓</span><span class="kbd-desc">Navigate</span></div>
-        <div class="kbd-row"><span class="kbd-key">Esc</span><span class="kbd-desc">Clear</span></div>
-      </div>
-    </div>
+    
   </div>
 
   <!-- FEED -->
@@ -1412,11 +1464,11 @@ body{animation:flicker 8s ease infinite;}
           </button>
         </div>
         <div class="ob-brand-inline">
-          <svg width="18" height="18" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100" height="100" rx="18" fill="#00DCFA"/>
-            <path d="M28 22 C28 22 28 78 28 78" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
-            <path d="M72 22 C72 22 72 78 72 78" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
-            <path d="M28 50 L72 50" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
+          <svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="20" fill="#00DCFA"/>
+            <path d="M30 20 C20 35 20 65 30 80" stroke="#072020" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M70 20 C80 35 80 65 70 80" stroke="#072020" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M30 50 L70 50" stroke="#072020" stroke-width="12" stroke-linecap="round"/>
           </svg>
           <span class="ob-brand-text">LIVE DATA FROM HYPERLIQUID</span>
         </div>
@@ -1573,12 +1625,10 @@ const WS_URL=BK.replace('https://','wss://').replace('http://','ws://')+'/ws';
 function toggleCat(el){
   const c=el.dataset.c;
   const all=['cm','cr','cg','cc','cw'];
-  if(onCats.size===1&&onCats.has(c)){
-    all.forEach(x=>onCats.add(x));
-    document.querySelectorAll('.cat').forEach(b=>b.classList.add('on'));
+  if(onCats.has(c)){
+    // If it's the last one, don't remove (keep at least one)
+    if(onCats.size>1){ onCats.delete(c); el.classList.remove('on'); }
   } else {
-    all.forEach(x=>onCats.delete(x));
-    document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
     onCats.add(c); el.classList.add('on');
   }
   render();

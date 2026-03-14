@@ -30,14 +30,15 @@ FEEDS = [
     {"url": "https://bitcoinist.com/feed/",                        "source": "Bitcoinist",       "cat": "cm"},
     {"url": "https://newsbtc.com/feed/",                           "source": "NewsBTC",          "cat": "cm"},
     {"url": "https://u.today/rss",                                 "source": "U.Today",          "cat": "cm"},
-    {"url": "https://www.forbes.com/crypto-blockchain/feed/",       "source": "Forbes",           "cat": "cm"},
-    {"url": "https://www.theinformation.com/feed",                  "source": "The Information",  "cat": "cm"},
+    {"url": "https://www.forbes.com/digital-assets/feed/",          "source": "Forbes",           "cat": "cm"},
+    {"url": "https://cointelegraph.com/rss/tag/analysis",               "source": "CT Analysis",      "cat": "cm"},
+    {"url": "https://protos.com/feed/",                             "source": "Protos",           "cat": "cm"},
     # WIRE — prefiltered feeds don't need keyword check
     {"url": "https://chainwire.org/feed/",                                         "source": "Chainwire",     "cat": "cr", "prefiltered": True},
     {"url": "https://www.globenewswire.com/RssFeed/subjectcode/BC-Blockchain",     "source": "GlobeNewswire", "cat": "cr", "prefiltered": True},
     {"url": "https://feed.businesswire.com/rss/home/?rss=G7&rssid=rs1",           "source": "BusinessWire",  "cat": "cr"},
     {"url": "https://www.prnewswire.com/rss/news-releases-list.rss",               "source": "PRNewswire",    "cat": "cr"},
-    {"url": "https://feeds.reuters.com/reuters/businessNews",                      "source": "Reuters",       "cat": "cr"},  # may be deprecated
+    {"url": "https://feeds.reuters.com/reuters/businessNews",                      "source": "Reuters",       "cat": "cr"},
     # GOV
     {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&dateb=&owner=include&count=40&search_text=&output=atom",
                                                                    "source": "SEC Filings",     "cat": "cg"},
@@ -189,24 +190,49 @@ async def fetch_whale_alerts(session):
         log.warning(f"Whale Alert: {e}")
         return []
 
+USER_AGENTS = [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Feedfetcher-Google; (+http://www.google.com/feedfetcher.html)",
+    "Mozilla/5.0 (compatible; NewsBot/1.0; +https://newsbot.example.com)",
+]
+import random
+
 async def fetch_feed(session, feed):
-    try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "application/rss+xml, application/xml, text/xml, */*",
-        }
-        async with session.get(feed["url"], timeout=aiohttp.ClientTimeout(total=20), headers=headers) as r:
-            if r.status != 200:
-                log.warning(f"{feed['source']}: HTTP {r.status}")
+    for attempt in range(2):
+        try:
+            headers = {
+                "User-Agent": random.choice(USER_AGENTS),
+                "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Cache-Control": "no-cache",
+            }
+            timeout = aiohttp.ClientTimeout(total=20, connect=8)
+            async with session.get(feed["url"], timeout=timeout, headers=headers, allow_redirects=True) as r:
+                if r.status == 429:
+                    log.warning(f"{feed['source']}: rate limited")
+                    return []
+                if r.status not in (200, 301, 302):
+                    log.warning(f"{feed['source']}: HTTP {r.status}")
+                    return []
+                raw = await r.text(errors="replace")
+            parsed = feedparser.parse(raw)
+            if not parsed.entries:
+                log.warning(f"{feed['source']}: 0 entries parsed (bozo={parsed.get('bozo',False)})")
                 return []
-            raw = await r.text(errors="replace")
-        parsed = feedparser.parse(raw)
-        new_items = [it for e in parsed.entries[:25] if (it := make_item(e, feed))]
-        log.info(f"{feed['source']}: +{len(new_items)} (total entries: {len(parsed.entries)})")
-        return new_items
-    except Exception as e:
-        log.warning(f"{feed['source']}: {e}")
-        return []
+            new_items = [it for e in parsed.entries[:30] if (it := make_item(e, feed))]
+            if new_items:
+                log.info(f"{feed['source']}: +{len(new_items)} new / {len(parsed.entries)} total")
+            return new_items
+        except asyncio.TimeoutError:
+            log.warning(f"{feed['source']}: timeout (attempt {attempt+1})")
+            if attempt == 0:
+                await asyncio.sleep(2)
+        except Exception as e:
+            log.warning(f"{feed['source']}: {e}")
+            return []
+    return []
 
 async def broadcast(msg):
     dead = set()
@@ -337,13 +363,14 @@ async def cors(request, handler):
 
 async def on_startup(app):
     app["poll"] = asyncio.create_task(poll_feeds())
+    app["xbot"] = asyncio.create_task(run_xbot(lambda: items))
 
 async def on_cleanup(app):
-    app["poll"].cancel()
-    try:
-        await app["poll"]
-    except asyncio.CancelledError:
-        pass
+    for key in ("poll", "xbot"):
+        if key in app:
+            app[key].cancel()
+            try: await app[key]
+            except asyncio.CancelledError: pass
 
 app = web.Application(middlewares=[cors])
 app.router.add_get("/",                       handle_index)
