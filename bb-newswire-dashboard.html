@@ -1341,27 +1341,35 @@ body{animation:flicker 8s ease infinite;}
       <button class="sb-btn" onclick="showT('Sources synced','rgba(34,197,94,.1)','var(--green)')">↻ Sync</button>
     </div>
     <div class="src-scroll">
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">Reuters</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">Bloomberg</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">AP News</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cr"></div><span class="src-name">CNBC</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">SEC EDGAR</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">Congress RSS</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cg"></div><span class="src-name">CFTC</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cc"></div><span class="src-name">Nansen</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cw"></div><span class="src-name">Whale Alert</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bs">SLOW</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
-      <div class="src-row"><div class="src-dot cx"></div><span class="src-name">𝕏 @becausebitcoin</span><span class="src-badge bd">OFF</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">Media</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'CoinTelegraph')"><div class="src-dot cm"></div><span class="src-name">CoinTelegraph</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'CoinDesk')"><div class="src-dot cm"></div><span class="src-name">CoinDesk</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Block')"><div class="src-dot cm"></div><span class="src-name">The Block</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Decrypt')"><div class="src-dot cm"></div><span class="src-name">Decrypt</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoin Magazine')"><div class="src-dot cm"></div><span class="src-name">Bitcoin Magazine</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Blockworks')"><div class="src-dot cm"></div><span class="src-name">Blockworks</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Defiant')"><div class="src-dot cm"></div><span class="src-name">The Defiant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Bitcoinist')"><div class="src-dot cm"></div><span class="src-name">Bitcoinist</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'NewsBTC')"><div class="src-dot cm"></div><span class="src-name">NewsBTC</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'U.Today')"><div class="src-dot cm"></div><span class="src-name">U.Today</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'Forbes')"><div class="src-dot cm"></div><span class="src-name">Forbes</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cm" onclick="toggleSrcRow(this,'The Information')"><div class="src-dot cm"></div><span class="src-name">The Information</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">Wire</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'Chainwire')"><div class="src-dot cr"></div><span class="src-name">Chainwire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'GlobeNewswire')"><div class="src-dot cr"></div><span class="src-name">GlobeNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'BusinessWire')"><div class="src-dot cr"></div><span class="src-name">BusinessWire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'PRNewswire')"><div class="src-dot cr"></div><span class="src-name">PRNewswire</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cr" onclick="toggleSrcRow(this,'Reuters')"><div class="src-dot cr"></div><span class="src-name">Reuters</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">.Gov</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'SEC Filings')"><div class="src-dot cg"></div><span class="src-name">SEC Filings</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'SEC News')"><div class="src-dot cg"></div><span class="src-name">SEC News</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'SEC Litigation')"><div class="src-dot cg"></div><span class="src-name">SEC Litigation</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cg" onclick="toggleSrcRow(this,'Federal Reserve')"><div class="src-dot cg"></div><span class="src-name">Federal Reserve</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">Onchain</span></div>
+      <div class="src-row cc" onclick="toggleSrcRow(this,'Glassnode')"><div class="src-dot cc"></div><span class="src-name">Glassnode</span><span class="src-badge bl">LIVE</span></div>
+      <div class="src-row cc" onclick="toggleSrcRow(this,'CryptoQuant')"><div class="src-dot cc"></div><span class="src-name">CryptoQuant</span><span class="src-badge bl">LIVE</span></div>
+      <div class="sb-hdr"><span class="sb-lbl">Keyboard</span></div>
     </div>
-
-    <!-- Keyboard shortcuts -->
     <div class="kbd-block">
       <div class="sb-hdr kbd-hdr"><span class="sb-lbl">Keyboard</span></div>
       <div class="kbd-grid">
@@ -1404,8 +1412,12 @@ body{animation:flicker 8s ease infinite;}
           </button>
         </div>
         <div class="ob-brand-inline">
-          <img src="https://hyperliquid.xyz/logo.png" width="16" height="16" onerror="this.style.display='none';this.nextSibling.style.display='inline'" style="border-radius:3px;vertical-align:middle;">
-          <svg width="16" height="16" viewBox="0 0 200 200" fill="none" style="display:none;vertical-align:middle"><rect width="200" height="200" rx="40" fill="#00DCFA"/><path d="M50 160 C50 160 50 40 50 40 C50 40 100 40 100 40 C100 40 100 100 100 100 C100 100 150 100 150 100 C150 100 150 160 150 160" stroke="white" stroke-width="24" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="18" height="18" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="18" fill="#00DCFA"/>
+            <path d="M28 22 C28 22 28 78 28 78" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
+            <path d="M72 22 C72 22 72 78 72 78" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
+            <path d="M28 50 L72 50" stroke="#0a1a1a" stroke-width="11" stroke-linecap="round"/>
+          </svg>
           <span class="ob-brand-text">LIVE DATA FROM HYPERLIQUID</span>
         </div>
         <button class="ob-expand-btn" id="ob-expand-btn" onclick="if(window.toggleObExpand)window.toggleObExpand()" title="Expand">
@@ -1456,11 +1468,29 @@ body{animation:flicker 8s ease infinite;}
 <script>
 /* ══ SOURCE MAP ══ */
 const SM={
+  'cointelegraph':{l:'[COINTELEGRAPH]',c:'cm'},
+  'coindesk':{l:'[COINDESK]',c:'cm'},
+  'the block':{l:'[THE BLOCK]',c:'cm'},
+  'decrypt':{l:'[DECRYPT]',c:'cm'},
+  'bitcoin magazine':{l:'[BTC MAG]',c:'cm'},
+  'btc mag':{l:'[BTC MAG]',c:'cm'},
+  'blockworks':{l:'[BLOCKWORKS]',c:'cm'},
+  'the defiant':{l:'[THE DEFIANT]',c:'cm'},
+  'bitcoinist':{l:'[BITCOINIST]',c:'cm'},
+  'newsbtc':{l:'[NEWSBTC]',c:'cm'},
+  'u.today':{l:'[U.TODAY]',c:'cm'},
+  'forbes':{l:'[FORBES]',c:'cm'},
+  'the information':{l:'[THE INFORMATION]',c:'cm'},
+  'chainwire':{l:'[CHAINWIRE]',c:'cr'},
+  'globenewswire':{l:'[GLOBENEWSWIRE]',c:'cr'},
+  'businesswire':{l:'[BUSINESSWIRE]',c:'cr'},
+  'prnewswire':{l:'[PRNEWSWIRE]',c:'cr'},
+  'pr newswire':{l:'[PRNEWSWIRE]',c:'cr'},
   'reuters':{l:'[REUTERS]',c:'cr'},'ap':{l:'[AP]',c:'cr'},'ap news':{l:'[AP]',c:'cr'},
   'bloomberg':{l:'[BLOOMBERG]',c:'cr'},'wsj':{l:'[WSJ]',c:'cr'},
   'financial times':{l:'[FT]',c:'cr'},'cnbc':{l:'[CNBC]',c:'cr'},'ft':{l:'[FT]',c:'cr'},
   'marketwatch':{l:'[MKT]',c:'cr'},'forbes':{l:'[FORBES]',c:'cr'},
-  'sec edgar':{l:'[SEC]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
+  'sec edgar':{l:'[SEC ⚡]',c:'cg'},'sec filings':{l:'[SEC ⚡]',c:'cg'},'sec':{l:'[SEC]',c:'cg'},
   'federal reserve':{l:'[FED]',c:'cg'},'fed':{l:'[FED]',c:'cg'},
   'congress':{l:'[CONGRESS]',c:'cg'},'treasury':{l:'[TREASURY]',c:'cg'},'cftc':{l:'[CFTC]',c:'cg'},
   'glassnode':{l:'[GLASSNODE]',c:'cc'},'cryptoquant':{l:'[CRYPTOQUANT]',c:'cc'},
@@ -1491,13 +1521,13 @@ const isBrk=h=>BRK.some(k=>h.toLowerCase().includes(k));
 
 /* ══ SEED DATA — shows while live feeds load ══ */
 const DEMO=[
-  {id:'d1',source:'CoinTelegraph', headline:'BlackRock IBIT records $612M single-session inflow — third largest in fund history',           ai:'$600M+ ETF sessions historically precede 5–10% price rallies within 72h. Strongest real-time institutional demand signal available.',score:.81},
-  {id:'d2',source:'Reuters',       headline:'US Treasury proposes mandatory digital asset exchange registration — Q3 compliance deadline',    ai:'Tier-1 regulatory event. Mandatory registration = supply disruption risk for smaller exchanges.',score:.94},
-  {id:'d3',source:'Whale Alert',   headline:'BREAKING: 9,241 BTC ($806M) transferred from Binance cold wallet to unknown address',           ai:'Large unknown-destination outflow. Possible OTC desk or custody move. Monitor reserves closely.',score:.92},
-  {id:'d4',source:'CoinDesk',      headline:"Norway's $1.7T sovereign wealth fund discloses 0.6% indirect BTC exposure via listed equities", ai:'Sovereign fund exposure is a major institutional legitimacy signal.',score:.74},
-  {id:'d5',source:'Bitcoin Magazine',headline:'Bitcoin mining difficulty adjusts +3.2% — network hashrate hits 780 EH/s all-time high',      ai:'Network health metric. No direct price catalyst — routine operational data.',score:.19},
-  {id:'d6',source:'Decrypt',       headline:'BREAKING: Japan FSA approves first domestic spot Bitcoin ETF — launch expected May 2025',        ai:'Japan = $4.8T AUM market. ETF approval events historically generate 5–15% BTC moves.',score:.96},
-  {id:'d7',source:'Glassnode',     headline:'BTC long-term holder supply hits ATH at 14.38M BTC — illiquid supply tightening rapidly',       ai:'LTH ATH + low exchange reserves = structural setup for supply shock.',score:.65},
+  {id:'d1',source:'CoinTelegraph',cat:'cm',_ts:new Date(Date.now()-3600000).toISOString(),time:new Date(Date.now()-3600000).toISOString(), headline:'BlackRock IBIT records $612M single-session inflow — third largest in fund history',           ai:'$600M+ ETF sessions historically precede 5–10% price rallies within 72h. Strongest real-time institutional demand signal available.',score:.81},
+  {id:'d2',source:'Reuters',cat:'cr',_ts:new Date(Date.now()-3600000).toISOString(),time:new Date(Date.now()-3600000).toISOString(),       headline:'US Treasury proposes mandatory digital asset exchange registration — Q3 compliance deadline',    ai:'Tier-1 regulatory event. Mandatory registration = supply disruption risk for smaller exchanges.',score:.94},
+  {id:'d3',source:'Whale Alert',cat:'cw',_ts:new Date(Date.now()-5400000).toISOString(),time:new Date(Date.now()-5400000).toISOString(),   headline:'BREAKING: 9,241 BTC ($806M) transferred from Binance cold wallet to unknown address',           ai:'Large unknown-destination outflow. Possible OTC desk or custody move. Monitor reserves closely.',score:.92},
+  {id:'d4',source:'CoinDesk',cat:'cm',_ts:new Date(Date.now()-7200000).toISOString(),time:new Date(Date.now()-7200000).toISOString(),      headline:"Norway's $1.7T sovereign wealth fund discloses 0.6% indirect BTC exposure via listed equities", ai:'Sovereign fund exposure is a major institutional legitimacy signal.',score:.74},
+  {id:'d5',source:'Bitcoin Magazine',cat:'cm',_ts:new Date(Date.now()-9000000).toISOString(),time:new Date(Date.now()-9000000).toISOString(),headline:'Bitcoin mining difficulty adjusts +3.2% — network hashrate hits 780 EH/s all-time high',      ai:'Network health metric. No direct price catalyst — routine operational data.',score:.19},
+  {id:'d6',source:'Decrypt',cat:'cm',_ts:new Date(Date.now()-10800000).toISOString(),time:new Date(Date.now()-10800000).toISOString(),       headline:'BREAKING: Japan FSA approves first domestic spot Bitcoin ETF — launch expected May 2025',        ai:'Japan = $4.8T AUM market. ETF approval events historically generate 5–15% BTC moves.',score:.96},
+  {id:'d7',source:'Glassnode',cat:'cc',_ts:new Date(Date.now()-12600000).toISOString(),time:new Date(Date.now()-12600000).toISOString(),     headline:'BTC long-term holder supply hits ATH at 14.38M BTC — illiquid supply tightening rapidly',       ai:'LTH ATH + low exchange reserves = structural setup for supply shock.',score:.65},
 ];
 const NOW=Date.now();
 DEMO.forEach((it,i)=>{
@@ -1508,7 +1538,7 @@ DEMO.forEach((it,i)=>{
 /* ══ STATE ══ */
 let items=[...DEMO],curTab='pending',selId=null,editId=null;
 let pushedN=0,skippedN=0,totalN=DEMO.length;
-let onCats=new Set(['cx','cw','cc','cm','cg','cr']);
+let onCats=new Set(['cm','cr','cg','cc','cw']);
 let viewFull=false;
 const seen=new Set(DEMO.map(x=>x.headline.slice(0,60).toLowerCase()));
 
@@ -1533,11 +1563,24 @@ function ingestItem(raw, sourceName){
   totalN++;
   return true;
 }
-const BK=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8000':'';
+const BK=(()=>{
+  const h=location.hostname;
+  if(h==='localhost'||h==='127.0.0.1') return 'http://localhost:8000';
+  return location.protocol==='https:'?'https://'+h:'http://'+h;
+})();
+const WS_URL=BK.replace('https://','wss://').replace('http://','ws://')+'/ws';
 
 function toggleCat(el){
   const c=el.dataset.c;
-  onCats.has(c)?(onCats.delete(c),el.classList.remove('on')):(onCats.add(c),el.classList.add('on'));
+  const all=['cm','cr','cg','cc','cw'];
+  if(onCats.size===1&&onCats.has(c)){
+    all.forEach(x=>onCats.add(x));
+    document.querySelectorAll('.cat').forEach(b=>b.classList.add('on'));
+  } else {
+    all.forEach(x=>onCats.delete(x));
+    document.querySelectorAll('.cat').forEach(b=>b.classList.remove('on'));
+    onCats.add(c); el.classList.add('on');
+  }
   render();
 }
 function setView(el,v){
@@ -1675,7 +1718,7 @@ let ws;
 function connectWS(){
   if(!BK) return;
   try{
-    ws=new WebSocket(BK.replace('http','ws')+'/ws');
+    ws=new WebSocket(WS_URL);
     ws.onopen=()=>{
       document.getElementById('ltxt').textContent='LIVE';
       document.getElementById('rfbtn').className='rfbtn live';
@@ -1712,15 +1755,19 @@ function connectWS(){
   }catch(_){}
 }
 function norm(r){
+  const rawAi=r.summary||r.ai_note||'';
+  const cleanAi=rawAi.replace(/<[^>]+>/g,'').replace(/&[a-z]+;/g,' ').trim().slice(0,200);
   return{
     id:      r.id,
     source:  r.source||'?',
+    cat:     r.cat||fS(r.source||'').c||'cm',
     headline:r.headline||'',
-    ai:      r.summary||r.ai_note||'Live — add your analysis.',
+    ai:      cleanAi||'Live — add your analysis.',
     score:   r.score||r.ai_score||0.5,
     status:  r.status||'pending',
     url:     r.url||'#',
-    time:    r.published||hm(new Date()),
+    time:    r.published||new Date().toISOString(),
+    _ts:     r.published||new Date().toISOString(),
   };
 }
 
@@ -1731,10 +1778,13 @@ function render(){
   const list=items.filter(it=>{
     if(curTab==='pending'&&it.status!=='pending') return false;
     if(curTab==='pushed' &&it.status!=='pushed')  return false;
-    if(!onCats.has(fS(it.source).c)) return false;
+    const itCat=it.cat||fS(it.source||'').c||'cm';
+    if(!onCats.has(itCat)) return false;
+    if(it._ts){const age=(Date.now()-new Date(it._ts))/3600000;if(age>96)return false;}
     if(q&&!it.headline.toLowerCase().includes(q)&&!it.source.toLowerCase().includes(q)) return false;
+    if(window._srcFilter&&it.source.toLowerCase()!==window._srcFilter.toLowerCase()) return false;
     return true;
-  });
+  }).sort((a,b)=>new Date(b._ts||0)-new Date(a._ts||0));
   if(!list.length){feed.innerHTML='<div class="feed-empty"><span class="fe-ico">◌</span><span class="fe-t">No items match filters</span></div>';stats();return;}
 
   feed.innerHTML=list.map(it=>{
@@ -1762,7 +1812,7 @@ function render(){
     return `<div class="ncard ${s.c}${brk?' brk':''} ${it.status}${isSel?' sel':''}${it._new?' fl':''}${isExp?' exp':''}"
          id="nc-${it.id}" onclick="doSel('${it.id}')">
       <div class="nc-head">
-        <span class="nc-time">${it.time}</span>
+        <span class="nc-time">${timeAgo(it._ts||it.time)}</span>
         ${brkb}
         <span class="nc-src">${s.l}</span>
         <span class="nc-cat">${catLabel}</span>
@@ -1817,7 +1867,7 @@ function renderD(it){
       <div class="d-top">
         ${brk?'<span class="brk-tag">Breaking</span>':''}
         <span class="d-src" style="color:${clr};border-color:${base}.22);background:${base}.07);">${s.l}</span>
-        <span class="d-age">${it.time} UTC</span>
+        <span class="d-age">${timeAgo(it._ts||it.time)} UTC</span>
       </div>
       <div class="d-hl">${esc(it.headline)}</div>
       <div class="d-ai">${esc(it.ai)}</div>
@@ -1941,9 +1991,20 @@ fetchBTC();setInterval(updBTC,5000);setInterval(fetchBTC,60000);
 
 function updCC(){document.getElementById('cc').textContent=document.getElementById('ta').value.length+' chars';}
 document.getElementById('ta').addEventListener('input',updCC);
+function timeAgo(ts){
+  if(!ts) return '—';
+  const d=new Date(ts), sec=Math.floor((Date.now()-d)/1000);
+  if(isNaN(sec)||sec<0) return '—';
+  if(sec<10) return 'JUST NOW';
+  if(sec<60) return sec+' SEC AGO';
+  const m=Math.floor(sec/60); if(m<60) return m+' MIN AGO';
+  const h=Math.floor(m/60); if(h<24) return h+' HR AGO';
+  return Math.floor(h/24)+' DAYS AGO';
+}
 function hm(d){return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
 
-connectWS();render();
+connectWS();
+setInterval(()=>render(),30000);render();
 setTimeout(fetchLive, 600);
 
 
@@ -2229,6 +2290,19 @@ document.addEventListener('click',function(e){
     }
   }catch(_){}
 })();
+
+window._srcFilter=null;
+window.toggleSrcRow=function(el,src){
+  if(window._srcFilter===src){
+    window._srcFilter=null;
+    document.querySelectorAll('.src-row').forEach(r=>r.classList.remove('active-filter'));
+  } else {
+    window._srcFilter=src;
+    document.querySelectorAll('.src-row').forEach(r=>r.classList.remove('active-filter'));
+    el.classList.add('active-filter');
+  }
+  render();
+}
 </script>
 </body>
 </html>
