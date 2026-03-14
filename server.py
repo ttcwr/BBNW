@@ -363,7 +363,8 @@ async def cors(request, handler):
 
 async def on_startup(app):
     app["poll"] = asyncio.create_task(poll_feeds())
-    app["xbot"] = asyncio.create_task(run_xbot(lambda: items))
+    if run_xbot:
+        app["xbot"] = asyncio.create_task(run_xbot(lambda: items))
 
 async def on_cleanup(app):
     for key in ("poll", "xbot"):
