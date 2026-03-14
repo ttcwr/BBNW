@@ -11,7 +11,7 @@ from aiohttp import web, WSMsgType
 
 PORT           = int(os.environ.get("PORT", 8000))
 HOST           = "0.0.0.0"
-FETCH_INTERVAL = 240
+FETCH_INTERVAL = 120
 MAX_ITEMS      = 600
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
@@ -51,19 +51,32 @@ FEEDS = [
 ]
 
 CRYPTO_KEYWORDS = [
+    # Major coins
     "bitcoin","btc","ethereum","eth","solana","sol","xrp","ripple",
     "dogecoin","doge","cardano","ada","avalanche","avax","chainlink","link",
     "hyperliquid","hype","bnb","tron","trx","polkadot","dot","litecoin","ltc",
-    "strategy","microstrategy","bitmine","metaplanet","semler",
-    "coinbase","binance","kraken","robinhood","galaxy digital",
-    "grayscale","blackrock","fidelity","ark invest",
+    "shiba","pepe","sui","aptos","near","atom","cosmos","algo","algorand",
+    "matic","polygon","arb","arbitrum","op","optimism","base","sei","ton",
+    # Companies
+    "strategy","microstrategy","bitmine","metaplanet","semler","mara","riot",
+    "coinbase","binance","kraken","robinhood","galaxy digital","cumberland",
+    "grayscale","blackrock","fidelity","ark invest","vaneck","bitwise",
     "tether","usdt","usdc","circle","paxos","ripple labs","consensys",
+    "coinshares","21shares","proshares","hashdex",
+    # Concepts
     "crypto","cryptocurrency","blockchain","defi","nft","web3",
-    "stablecoin","digital asset","virtual currency","cbdc",
-    "bitcoin etf","spot etf","crypto etf","bitcoin reserve",
-    "mining","proof of stake","proof of work","validator",
-    "wallet","cold storage","custody","staking","yield farming",
-    "layer 2","lightning network","rollup","zero knowledge",
+    "stablecoin","digital asset","virtual currency","cbdc","tokeniz",
+    "bitcoin etf","spot etf","crypto etf","bitcoin reserve","strategic reserve",
+    "mining","proof of stake","proof of work","validator","miner",
+    "wallet","cold storage","custody","staking","yield","airdrop",
+    "layer 2","lightning network","rollup","zero knowledge","zk-proof",
+    "dex","exchange","swap","liquidity","amm","protocol",
+    "halving","bull","bear","market","price","rally","dump","crash",
+    "sec","cftc","regulation","regulatory","compliance","enforcement",
+    "hack","exploit","breach","stolen","rug pull","scam","fraud",
+    "institutional","fund","etf","futures","options","derivatives",
+    "whale","on-chain","onchain","transaction","transfer","volume",
+    "treasury","reserve","holding","invest","acquisition",
 ]
 
 BREAKING_WORDS = [
@@ -126,6 +139,7 @@ def make_item(entry, feed):
     seen_keys.add(key)
     summary = strip_html(entry.get("summary") or "")[:220]
     # Wire/Gov: keyword filter unless prefiltered
+    # Media (cm) feeds are already crypto-specific — no filtering needed
     if feed.get("cat") in ("cr", "cg") and not feed.get("prefiltered"):
         text = (headline + " " + summary).lower()
         if not any(k in text for k in CRYPTO_KEYWORDS):
@@ -221,7 +235,7 @@ async def fetch_feed(session, feed):
             if not parsed.entries:
                 log.warning(f"{feed['source']}: 0 entries parsed (bozo={parsed.get('bozo',False)})")
                 return []
-            new_items = [it for e in parsed.entries[:30] if (it := make_item(e, feed))]
+            new_items = [it for e in parsed.entries[:50] if (it := make_item(e, feed))]
             if new_items:
                 log.info(f"{feed['source']}: +{len(new_items)} new / {len(parsed.entries)} total")
             return new_items
@@ -246,7 +260,16 @@ async def broadcast(msg):
 
 async def poll_feeds():
     global items
+    poll_count = 0
     while True:
+        poll_count += 1
+        # Clear seen_keys every 12 polls (~24 min) to allow re-fetching updated stories
+        if poll_count % 12 == 0:
+            old_size = len(seen_keys)
+            # Keep only keys from current items
+            current_keys = {it["headline"][:60].lower() for it in items}
+            seen_keys.intersection_update(current_keys)
+            log.info(f"Cleared {old_size - len(seen_keys)} stale seen_keys")
         log.info("── Polling %d feeds ──", len(FEEDS))
         connector = aiohttp.TCPConnector(ssl=False)
         async with aiohttp.ClientSession(connector=connector) as session:
