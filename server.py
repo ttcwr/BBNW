@@ -363,15 +363,13 @@ async def cors(request, handler):
 
 async def on_startup(app):
     app["poll"] = asyncio.create_task(poll_feeds())
-    if run_xbot:
-        app["xbot"] = asyncio.create_task(run_xbot(lambda: items))
 
 async def on_cleanup(app):
-    for key in ("poll", "xbot"):
-        if key in app:
-            app[key].cancel()
-            try: await app[key]
-            except asyncio.CancelledError: pass
+    app["poll"].cancel()
+    try:
+        await app["poll"]
+    except asyncio.CancelledError:
+        pass
 
 app = web.Application(middlewares=[cors])
 app.router.add_get("/",                       handle_index)
